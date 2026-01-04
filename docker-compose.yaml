@@ -4,7 +4,6 @@ services:
     ports:
       - "3306:3306"
     image: mysql
-    restart: always
     env_file: ./database/.env
     volumes:
           - type: bind
