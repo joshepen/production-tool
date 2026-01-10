@@ -1,3 +1,5 @@
+use pt;
+
 CREATE TABLE `users`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `first_name` VARCHAR(255) NOT NULL,
