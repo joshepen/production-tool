@@ -2,6 +2,8 @@ mod db;
 use dotenv::dotenv;
 use std::env;
 
+use crate::db::user::*;
+
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     dotenv().ok();
