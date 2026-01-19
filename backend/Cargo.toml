@@ -7,5 +7,5 @@ edition = "2024"
 actix-web = "4.12.1"
 chrono = "0.4.42"
 dotenv = "0.15.0"
-sqlx = {version = "0.8.6", features = ["mysql", "runtime-tokio", "time"]}
+sqlx = {version = "0.8.6", features = ["mysql", "runtime-tokio", "chrono"]}
 tokio = {version = "1.49.0", features = ["full"]}
