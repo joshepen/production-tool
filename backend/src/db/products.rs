@@ -6,7 +6,7 @@ pub struct Product {
 
 pub async fn get_product(
     conn: &mut sqlx::MySqlConnection,
-    id: i32,
+    id: &i32,
 ) -> Result<Product, sqlx::Error> {
     let product = query_as!(
         Product,
