@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS product_orders (
 	address VARCHAR(100) NOT NULL,
 	product_id INT NOT NULL,
 	FOREIGN KEY (product_id) REFERENCES products(id),
-	status_id INT DEFAULT 0 NOT NULL,
+	status_id INT DEFAULT 1 NOT NULL,
 	FOREIGN KEY (status_id) REFERENCES statuses(id),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
