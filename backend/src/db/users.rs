@@ -16,7 +16,7 @@ pub struct User {
     pub department_id: i32,
 }
 
-pub async fn get_user(conn: &mut sqlx::MySqlConnection, id: &i32) -> Result<User, sqlx::Error> {
+pub async fn get_user(conn: &mut sqlx::MySqlConnection, id: i32) -> Result<User, sqlx::Error> {
     let user = query_as!(
         User,
         "SELECT u.id, u.first_name, u.last_name, u.hired_at, u.department_id FROM users u WHERE u.id = ?",
@@ -58,5 +58,12 @@ pub async fn create_user(conn: &mut sqlx::MySqlConnection, u: &NewUser) -> Resul
     };
     q.execute(conn).await?;
 
+    return Ok(());
+}
+
+pub async fn delete_user(conn: &mut sqlx::MySqlConnection, id: i32) -> Result<(), sqlx::Error> {
+    query!("DELETE FROM users WHERE id = ?", id)
+        .execute(conn)
+        .await?;
     return Ok(());
 }

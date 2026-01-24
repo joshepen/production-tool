@@ -16,7 +16,7 @@ pub struct ProductOrder {
 
 pub async fn get_product_order(
     conn: &mut sqlx::MySqlConnection,
-    id: &i32,
+    id: i32,
 ) -> Result<ProductOrder, sqlx::Error> {
     let product_order = query_as!(
         ProductOrder,
@@ -42,7 +42,7 @@ pub async fn get_product_orders(
 
 pub async fn get_product_orders_by_status(
     conn: &mut sqlx::MySqlConnection,
-    status_id: &i32,
+    status_id: i32,
 ) -> Result<Vec<ProductOrder>, sqlx::Error> {
     let product_orders = query_as!(
         ProductOrder,
@@ -64,5 +64,15 @@ pub async fn create_product_order(
     )
     .execute(conn)
     .await?;
+    return Ok(());
+}
+
+pub async fn delete_product_order(
+    conn: &mut sqlx::MySqlConnection,
+    id: i32,
+) -> Result<(), sqlx::Error> {
+    query!("DELETE FROM product_orders WHERE id = ?", id)
+        .execute(conn)
+        .await?;
     return Ok(());
 }
