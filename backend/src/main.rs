@@ -1,10 +1,13 @@
 mod db;
+mod restapi;
+use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use std::env;
 
 use crate::db::*;
+use crate::restapi::*;
 
-#[tokio::main]
+#[actix_web::main]
 async fn main() -> Result<(), sqlx::Error> {
     dotenv().ok();
 
@@ -15,7 +18,15 @@ async fn main() -> Result<(), sqlx::Error> {
                 .as_str(),
         )
         .await?;
-    let mut conn = pool.acquire().await?;
+
+    HttpServer::new(move || {
+        App::new()
+            .app_data(web::Data::new(pool.clone()))
+            .configure(restapi::configure)
+    })
+    .bind(("127.0.0.1", 8001))?
+    .run()
+    .await?;
 
     return Ok(());
 }

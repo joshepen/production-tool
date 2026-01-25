@@ -15,7 +15,7 @@ pub struct ProductOrder {
 }
 
 pub async fn get_product_order(
-    conn: &mut sqlx::MySqlConnection,
+    pool: &sqlx::MySqlPool,
     id: i32,
 ) -> Result<ProductOrder, sqlx::Error> {
     let product_order = query_as!(
@@ -23,38 +23,36 @@ pub async fn get_product_order(
         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o WHERE o.id = ?",
         id
     )
-    .fetch_one(conn)
+    .fetch_one(pool)
     .await?;
     return Ok(product_order);
 }
 
-pub async fn get_product_orders(
-    conn: &mut sqlx::MySqlConnection,
-) -> Result<Vec<ProductOrder>, sqlx::Error> {
+pub async fn get_product_orders(pool: &sqlx::MySqlPool) -> Result<Vec<ProductOrder>, sqlx::Error> {
     let product_orders = query_as!(
         ProductOrder,
         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o ORDER BY o.status_id ASC"
     )
-    .fetch_all(conn)
+    .fetch_all(pool)
     .await?;
     return Ok(product_orders);
 }
 
 pub async fn get_product_orders_by_status(
-    conn: &mut sqlx::MySqlConnection,
+    pool: &sqlx::MySqlPool,
     status_id: i32,
 ) -> Result<Vec<ProductOrder>, sqlx::Error> {
     let product_orders = query_as!(
         ProductOrder,
         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o WHERE o.status_id = ?", status_id
     )
-    .fetch_all(conn)
+    .fetch_all(pool)
     .await?;
     return Ok(product_orders);
 }
 
 pub async fn create_product_order(
-    conn: &mut sqlx::MySqlConnection,
+    pool: &sqlx::MySqlPool,
     po: &NewProductOrder,
 ) -> Result<(), sqlx::Error> {
     query!(
@@ -62,17 +60,14 @@ pub async fn create_product_order(
         po.address,
         po.product_id
     )
-    .execute(conn)
+    .execute(pool)
     .await?;
     return Ok(());
 }
 
-pub async fn delete_product_order(
-    conn: &mut sqlx::MySqlConnection,
-    id: i32,
-) -> Result<(), sqlx::Error> {
+pub async fn delete_product_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
     query!("DELETE FROM product_orders WHERE id = ?", id)
-        .execute(conn)
+        .execute(pool)
         .await?;
     return Ok(());
 }

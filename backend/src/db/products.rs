@@ -9,42 +9,36 @@ pub struct Product {
     pub name: String,
 }
 
-pub async fn get_product(
-    conn: &mut sqlx::MySqlConnection,
-    id: i32,
-) -> Result<Product, sqlx::Error> {
+pub async fn get_product(pool: &sqlx::MySqlPool, id: i32) -> Result<Product, sqlx::Error> {
     let product = query_as!(
         Product,
         "SELECT p.id, p.name FROM products p WHERE p.id = ?",
         id
     )
-    .fetch_one(conn)
+    .fetch_one(pool)
     .await?;
     return Ok(product);
 }
 
-pub async fn get_products(conn: &mut sqlx::MySqlConnection) -> Result<Vec<Product>, sqlx::Error> {
+pub async fn get_products(pool: &sqlx::MySqlPool) -> Result<Vec<Product>, sqlx::Error> {
     let products = query_as!(Product, "SELECT p.id, p.name FROM products p")
-        .fetch_all(conn)
+        .fetch_all(pool)
         .await?;
 
     return Ok(products);
 }
 
-pub async fn create_product(
-    conn: &mut sqlx::MySqlConnection,
-    p: &NewProduct,
-) -> Result<(), sqlx::Error> {
+pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<(), sqlx::Error> {
     query!("INSERT INTO products (name) VALUES (?)", p.name,)
-        .execute(conn)
+        .execute(pool)
         .await?;
 
     return Ok(());
 }
 
-pub async fn delete_product(conn: &mut sqlx::MySqlConnection, id: i32) -> Result<(), sqlx::Error> {
+pub async fn delete_product(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
     query!("DELETE FROM products WHERE id = ?", id)
-        .execute(conn)
+        .execute(pool)
         .await?;
     return Ok(());
 }
