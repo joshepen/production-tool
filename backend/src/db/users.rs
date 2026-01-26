@@ -2,6 +2,7 @@ use chrono::{self, DateTime, Utc};
 use serde;
 use sqlx::{query, query_as};
 
+#[derive(serde::Deserialize)]
 pub struct NewUser {
     pub first_name: String,
     pub last_name: String,
