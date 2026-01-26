@@ -73,3 +73,18 @@ pub async fn delete_product_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(),
         .await?;
     return Ok(());
 }
+
+pub async fn set_po_status(
+    pool: &sqlx::MySqlPool,
+    id: i32,
+    status_id: i32,
+) -> Result<(), sqlx::Error> {
+    query!(
+        "UPDATE product_orders SET status_id = ? WHERE id = ?",
+        status_id,
+        id
+    )
+    .execute(pool)
+    .await?;
+    return Ok(());
+}
