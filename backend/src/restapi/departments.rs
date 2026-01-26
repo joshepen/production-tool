@@ -1,4 +1,4 @@
-use crate::db::departments::{self, create_department};
+use crate::db::departments;
 use crate::restapi::errors::sqlx_error_to_http;
 use actix_web::{HttpResponse, Responder, delete, get, post, web};
 
@@ -28,7 +28,7 @@ async fn get_department(
     query: web::Query<DepartmentQuery>,
 ) -> impl Responder {
     match departments::get_department(&pool, query.id).await {
-        Ok(user) => HttpResponse::Ok().json(user),
+        Ok(d) => HttpResponse::Ok().json(d),
         Err(e) => sqlx_error_to_http(e),
     }
 }

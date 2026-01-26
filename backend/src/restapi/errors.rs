@@ -12,6 +12,9 @@ pub fn sqlx_error_to_http(err: SqlxError) -> actix_web::HttpResponse {
                 HttpResponse::BadRequest().body("Invalid foreign key reference")
             }
 
+            Some("23000") => HttpResponse::BadRequest()
+                .body("Dependency restriction: other rows depend on this row."),
+
             _ => HttpResponse::InternalServerError().body("Database error"),
         },
 

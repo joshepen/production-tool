@@ -1,9 +1,11 @@
 use sqlx::{query, query_as};
 
+#[derive(serde::Deserialize)]
 pub struct NewProduct {
     pub name: String,
 }
 
+#[derive(serde::Serialize)]
 pub struct Product {
     pub id: i32,
     pub name: String,

@@ -1,11 +1,13 @@
 use chrono::{DateTime, Utc};
 use sqlx::{query, query_as};
 
+#[derive(serde::Deserialize)]
 pub struct NewProductOrder {
     pub address: String,
     pub product_id: i32,
 }
 
+#[derive(serde::Serialize)]
 pub struct ProductOrder {
     pub id: i32,
     pub address: String,
