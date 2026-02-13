@@ -4,9 +4,6 @@ use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use std::env;
 
-use crate::db::*;
-use crate::restapi::*;
-
 #[actix_web::main]
 async fn main() -> Result<(), sqlx::Error> {
     dotenv().ok();

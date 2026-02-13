@@ -3,18 +3,12 @@ use crate::restapi::errors::sqlx_error_to_http;
 use actix_web::{HttpResponse, Responder, delete, get, post, web};
 
 #[derive(serde::Deserialize)]
-pub struct ProductOrderQuery {
-    pub id: i32,
-}
-
-#[derive(serde::Deserialize)]
 pub struct ProductOrderStatusQuery {
     pub status_id: Option<i32>,
 }
 
 #[derive(serde::Deserialize)]
 pub struct ProductOrderStatusPost {
-    pub id: i32,
     pub status_id: i32,
 }
 
@@ -43,23 +37,20 @@ async fn get_product_orders(
     }
 }
 
-#[get("/product_order")]
-async fn get_product_order(
-    pool: web::Data<sqlx::MySqlPool>,
-    query: web::Query<ProductOrderQuery>,
-) -> impl Responder {
-    match product_orders::get_product_order(&pool, query.id).await {
+#[get("/product_order/{id}")]
+async fn get_product_order(pool: web::Data<sqlx::MySqlPool>, id: web::Path<i32>) -> impl Responder {
+    match product_orders::get_product_order(&pool, *id).await {
         Ok(po) => HttpResponse::Ok().json(po),
         Err(e) => sqlx_error_to_http(e),
     }
 }
 
-#[delete("/product_order")]
+#[delete("/product_order/{id}")]
 async fn delete_product_order(
     pool: web::Data<sqlx::MySqlPool>,
-    query: web::Query<ProductOrderQuery>,
+    id: web::Path<i32>,
 ) -> impl Responder {
-    match product_orders::delete_product_order(&pool, query.id).await {
+    match product_orders::delete_product_order(&pool, *id).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
@@ -68,20 +59,21 @@ async fn delete_product_order(
 #[post("/product_order")]
 async fn post_product_order(
     pool: web::Data<sqlx::MySqlPool>,
-    query: web::Query<product_orders::NewProductOrder>,
+    body: web::Json<product_orders::NewProductOrder>,
 ) -> impl Responder {
-    match product_orders::create_product_order(&pool, &query).await {
+    match product_orders::create_product_order(&pool, &body).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
 }
 
-#[post("/product_order/status")]
+#[post("/product_order/{id}/status")]
 async fn set_po_status(
     pool: web::Data<sqlx::MySqlPool>,
-    query: web::Query<ProductOrderStatusPost>,
+    id: web::Path<i32>,
+    body: web::Json<ProductOrderStatusPost>,
 ) -> impl Responder {
-    match product_orders::set_po_status(&pool, query.id, query.status_id).await {
+    match product_orders::set_po_status(&pool, *id, body.status_id).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
