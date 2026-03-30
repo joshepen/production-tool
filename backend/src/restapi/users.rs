@@ -38,7 +38,7 @@ async fn post_user(
     body: web::Json<users::NewUser>,
 ) -> impl Responder {
     match users::create_user(&pool, &body).await {
-        Ok(_) => HttpResponse::Ok().finish(),
+        Ok(id) => HttpResponse::Ok().body(id.to_string()),
         Err(e) => sqlx_error_to_http(e),
     }
 }

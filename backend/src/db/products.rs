@@ -30,12 +30,12 @@ pub async fn get_products(pool: &sqlx::MySqlPool) -> Result<Vec<Product>, sqlx::
     return Ok(products);
 }
 
-pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<(), sqlx::Error> {
-    query!("INSERT INTO products (name) VALUES (?)", p.name,)
+pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<u64, sqlx::Error> {
+    let result = query!("INSERT INTO products (name) VALUES (?)", p.name,)
         .execute(pool)
         .await?;
 
-    return Ok(());
+    return Ok(result.last_insert_id());
 }
 
 pub async fn delete_product(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {

@@ -56,15 +56,15 @@ pub async fn get_product_orders_by_status(
 pub async fn create_product_order(
     pool: &sqlx::MySqlPool,
     po: &NewProductOrder,
-) -> Result<(), sqlx::Error> {
-    query!(
+) -> Result<u64, sqlx::Error> {
+    let result = query!(
         "INSERT INTO product_orders (address, product_id, status_id) VALUES (?, ?, 1)",
         po.address,
         po.product_id
     )
     .execute(pool)
     .await?;
-    return Ok(());
+    return Ok(result.last_insert_id());
 }
 
 pub async fn delete_product_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {

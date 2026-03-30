@@ -32,12 +32,12 @@ pub async fn get_department(pool: &sqlx::MySqlPool, id: i32) -> Result<Departmen
 pub async fn create_department(
     pool: &sqlx::MySqlPool,
     d: &NewDepartment,
-) -> Result<(), sqlx::Error> {
-    query!("INSERT INTO departments (name) VALUES (?)", d.name,)
+) -> Result<u64, sqlx::Error> {
+    let result = query!("INSERT INTO departments (name) VALUES (?)", d.name,)
         .execute(pool)
         .await?;
 
-    return Ok(());
+    return Ok(result.last_insert_id());
 }
 
 pub async fn delete_department(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {

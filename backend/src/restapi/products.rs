@@ -38,7 +38,7 @@ async fn post_product(
     body: web::Json<products::NewProduct>,
 ) -> impl Responder {
     match products::create_product(&pool, &body).await {
-        Ok(_) => HttpResponse::Ok().finish(),
+        Ok(id) => HttpResponse::Ok().body(id.to_string()),
         Err(e) => sqlx_error_to_http(e),
     }
 }

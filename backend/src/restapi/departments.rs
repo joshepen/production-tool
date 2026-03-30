@@ -39,7 +39,7 @@ async fn post_department(
     body: web::Json<departments::NewDepartment>,
 ) -> impl Responder {
     match departments::create_department(&pool, &body).await {
-        Ok(_) => HttpResponse::Ok().finish(),
+        Ok(id) => HttpResponse::Ok().body(id.to_string()),
         Err(e) => sqlx_error_to_http(e),
     }
 }

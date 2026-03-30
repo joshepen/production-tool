@@ -41,7 +41,7 @@ pub async fn get_users(pool: &sqlx::MySqlPool) -> Result<Vec<User>, sqlx::Error>
     return Ok(users);
 }
 
-pub async fn create_user(pool: &sqlx::MySqlPool, u: &NewUser) -> Result<(), sqlx::Error> {
+pub async fn create_user(pool: &sqlx::MySqlPool, u: &NewUser) -> Result<u64, sqlx::Error> {
     // I know this doesn't scale well but the query builder is so verbose that
     // I'd say it isn't worth it for one Option
     let q = match u.hired_at {
@@ -59,9 +59,9 @@ pub async fn create_user(pool: &sqlx::MySqlPool, u: &NewUser) -> Result<(), sqlx
             u.department_id,
         ),
     };
-    q.execute(pool).await?;
+    let result = q.execute(pool).await?;
 
-    return Ok(());
+    return Ok(result.last_insert_id());
 }
 
 pub async fn delete_user(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
