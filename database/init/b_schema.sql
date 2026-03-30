@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50) NOT NULL,
-	hired_at DATE NOT NULL,
+	hired_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	department_id INT NOT NULL,
 	FOREIGN KEY (department_id) REFERENCES departments(id)
 );
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS product_orders (
 	address VARCHAR(100) NOT NULL,
 	product_id INT NOT NULL,
 	FOREIGN KEY (product_id) REFERENCES products(id),
-	status_id INT NOT NULL,
+	status_id INT DEFAULT 1 NOT NULL,
 	FOREIGN KEY (status_id) REFERENCES statuses(id),
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
