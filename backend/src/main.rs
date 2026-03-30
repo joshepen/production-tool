@@ -4,9 +4,6 @@ use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use std::env;
 
-// TODO: Make product order product id a list
-// TODO change all ids from i32 to u64
-
 #[actix_web::main]
 async fn main() -> Result<(), sqlx::Error> {
     dotenv().ok();
