@@ -1,5 +1,6 @@
 mod db;
 mod restapi;
+use actix_cors::Cors;
 use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use std::env;
@@ -17,9 +18,12 @@ async fn main() -> Result<(), sqlx::Error> {
         .await?;
 
     HttpServer::new(move || {
+        let cors = Cors::permissive();
+
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .configure(restapi::configure)
+            .wrap(cors)
     })
     .bind(("127.0.0.1", 8001))?
     .run()
