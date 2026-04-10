@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
   import Bar from '@/components/Bar.vue'
-  import { useMessageStore } from '@/stores/message'
+  import { useStatusMessageStore } from '@/stores/statusMessage'
 
-  const { messages } = useMessageStore()
+  const { messages } = useStatusMessageStore()
 </script>
