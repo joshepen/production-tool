@@ -3,6 +3,8 @@
   import { ref } from 'vue'
   const searchValue = ref('')
   const props = defineProps<{ headers: Header[], query: object }>()
+  const headers = ref([...props.headers, { key: 'delete' }])
+  defineEmits(['add', 'delete'])
 </script>
 <template>
   <div :style="{display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center'}">
@@ -20,13 +22,7 @@
         icon="mdi-plus-thick"
         rounded="lg"
         size="large"
-      />
-      <v-btn
-        color="red-lighten-1"
-        density="default"
-        icon="mdi-delete"
-        rounded="lg"
-        size="large"
+        @click="$emit('add')"
       />
     </div>
     <v-data-table
@@ -40,6 +36,17 @@
         #[`item.${header.key}`]="{ item }"
       >
         {{ header.isDate ? new Date(item[header.key]).toDateString() : new Date(item[header.key]).toString() }}
+      </template>
+      <template #item.delete="thing">
+        <v-btn
+          color="red-lighten-1"
+          density="compact"
+          icon="mdi-delete"
+          rounded="lg"
+          size="x-large"
+          :style="{justifySelf:'end'}"
+          @click="$emit('delete',thing.item.id)"
+        />
       </template>
     </v-data-table>
   </div>
