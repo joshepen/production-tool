@@ -1,8 +1,8 @@
-import { useBackendApiStore } from '@/stores/backendApi'
 import type { User } from '@/types/databaseTypes'
 import { useQuery } from '@tanstack/vue-query'
+import { useBackendApiStore } from '@/stores/backendApi'
 
-export function useUserQuery() {
+export function useUserQuery (): Query {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['users'],
@@ -12,7 +12,7 @@ export function useUserQuery() {
     },
     select: (data: any[]) =>
       data.map(
-        (item) =>
+        item =>
           ({
             ...item,
             hired_at: new Date(item.hired_at),

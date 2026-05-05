@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main :style="{height: '100vh'}">
       <Bar />
       <router-view />
       <v-snackbar-queue

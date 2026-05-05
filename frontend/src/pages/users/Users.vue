@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { User } from '@/types/databaseTypes';
-import { useUserQuery } from '@/queries/databaseQuery';
-const userQuery = useUserQuery()
+  import ThingTable from '@/components/ThingTable.vue'
+  import { useUserQuery } from '@/queries/DatabaseQuery'
+  const userQuery = useUserQuery()
+  const headers = [{ title: 'First Name', key: 'first_name' }, { title: 'Last Name', key: 'last_name' }, { title: 'Department ID', key: 'department_id' }, { title: 'Hired At', key: 'hired_at', isDate: true }]
 </script>
 
 <template>
-  <span>Users</span>
-  <v-data-table :items="userQuery.data.value as User[] ?? []"
-    :headers="[{ title: 'First Name', key: 'first_name' }, { title: 'Last Name', key: 'last_name' }, { title: 'Department ID', key: 'department_id' }, { title: 'Hired At', key: 'hired_at' }]"><template
-      v-slot:item.hired_at="{ item }">{{ item.hired_at.toDateString() }}</template></v-data-table>
+  <div :style="{display: 'flex', flexDirection: 'column', margin: '10px'}">
+    <h1>Users</h1>
+    <ThingTable :headers :query="userQuery" />
+  </div>
 </template>
