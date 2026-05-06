@@ -39,8 +39,12 @@ pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<u6
 }
 
 pub async fn delete_product(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
-    query!("DELETE FROM products WHERE id = ?", id)
+    let result = query!("DELETE FROM products WHERE id = ?", id)
         .execute(pool)
         .await?;
-    return Ok(());
+
+    match result.rows_affected() {
+        0 => Err(sqlx::Error::RowNotFound),
+        _ => Ok(()),
+    }
 }

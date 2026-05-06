@@ -68,10 +68,14 @@ pub async fn create_product_order(
 }
 
 pub async fn delete_product_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
-    query!("DELETE FROM product_orders WHERE id = ?", id)
+    let result = query!("DELETE FROM product_orders WHERE id = ?", id)
         .execute(pool)
         .await?;
-    return Ok(());
+
+    match result.rows_affected() {
+        0 => Err(sqlx::Error::RowNotFound),
+        _ => Ok(()),
+    }
 }
 
 pub async fn set_po_status(

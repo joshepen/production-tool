@@ -65,8 +65,11 @@ pub async fn create_user(pool: &sqlx::MySqlPool, u: &NewUser) -> Result<u64, sql
 }
 
 pub async fn delete_user(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
-    query!("DELETE FROM users WHERE id = ?", id)
+    let result = query!("DELETE FROM users WHERE id = ?", id)
         .execute(pool)
         .await?;
-    return Ok(());
+    match result.rows_affected() {
+        0 => Err(sqlx::Error::RowNotFound),
+        _ => Ok(()),
+    }
 }

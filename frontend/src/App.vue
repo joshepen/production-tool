@@ -10,8 +10,9 @@
 </template>
 
 <script lang="ts" setup>
+  import { storeToRefs } from 'pinia'
   import Bar from '@/components/Bar.vue'
   import { useStatusMessageStore } from '@/stores/statusMessage'
 
-  const { messages } = useStatusMessageStore()
+  const { messages } = storeToRefs(useStatusMessageStore())
 </script>
