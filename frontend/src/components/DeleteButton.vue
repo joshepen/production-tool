@@ -3,7 +3,6 @@
   defineEmits(['confirm', 'cancel'])
   defineProps<{ name: string }>()
   const open = ref<boolean>(false)
-
 </script>
 
 <template>
@@ -16,7 +15,7 @@
     :style="{justifySelf:'end'}"
     @click="open = true"
   />
-  <v-dialog v-model="open">
+  <v-dialog v-model="open" width="auto">
     <v-card>
       <v-card-item>
         <v-card-title>
