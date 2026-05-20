@@ -4,6 +4,8 @@
   const searchValue = ref('')
   const props = defineProps<{ headers: Header[], query: object }>()
   const headers = ref([...props.headers, { key: 'delete' }])
+  const dialogOpen = ref(false)
+
   defineEmits(['add', 'delete'])
 </script>
 <template>
@@ -22,9 +24,10 @@
         icon="mdi-plus-thick"
         rounded="lg"
         size="large"
-        @click="$emit('add')"
+        @click="dialogOpen= true"
       />
     </div>
+    <slot :close="() => dialogOpen = false" name="create-dialog" :open="dialogOpen" />
     <v-data-table
       :headers
       :items="query.data.value ?? []"

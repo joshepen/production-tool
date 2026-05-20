@@ -20,3 +20,14 @@ export function useUserQuery (): Query {
       ),
   })
 }
+
+export function useDepartmentQuery (): Query {
+  const backendApiStore = useBackendApiStore()
+  return useQuery({
+    queryKey: ['departments'],
+    queryFn: async () => {
+      const response = await backendApiStore.get('/departments')
+      return response.data
+    },
+  })
+}

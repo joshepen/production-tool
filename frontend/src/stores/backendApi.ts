@@ -4,7 +4,7 @@ import { useStatusMessageStore } from '@/stores/statusMessage'
 
 export const useBackendApiStore = defineStore('backend_api', () => {
   const messageStore = useStatusMessageStore()
-  const axiosInstance = axios.create({ baseURL: import.meta.env.VITE_BACKEND_URL })
+  const axiosInstance = axios.create({ baseURL: import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:8001' })
   axiosInstance.interceptors.response.use(
     config => {
       return config
@@ -14,7 +14,7 @@ export const useBackendApiStore = defineStore('backend_api', () => {
         `Error: ${error.response?.data || `Data request failed for endpoint ${error.response.config.url}.`}`,
         'error',
       )
-      return error
+      return Promise.reject(error)
     },
   )
 
@@ -25,5 +25,9 @@ export const useBackendApiStore = defineStore('backend_api', () => {
   async function _delete (path: string): Promise<AxiosResponse> {
     return await axiosInstance.delete(path)
   }
-  return { get, _delete }
+
+  async function post (path: string, data: object): Promise<AxiosResponse> {
+    return await axiosInstance.post(path, data)
+  }
+  return { get, _delete, post }
 })

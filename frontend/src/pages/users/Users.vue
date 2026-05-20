@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { useQueryClient } from '@tanstack/vue-query'
   import ThingTable from '@/components/ThingTable.vue'
-  import { useUserQuery } from '@/queries/DatabaseQuery'
+  import CreateUserDialog from '@/pages/users/CreateUserDialog'
+  import { useUserQuery } from '@/queries/DatabaseQueries'
   import { useBackendApiStore } from '@/stores/backendApi'
   const userQuery = useUserQuery()
   const queryClient = useQueryClient()
@@ -17,6 +18,8 @@
 <template>
   <div :style="{display: 'flex', flexDirection: 'column', margin: '10px'}">
     <h1>Users</h1>
-    <ThingTable :headers :query="userQuery" @add="()=>console.log('Add pressed')" @delete="onDelete" />
+    <ThingTable :headers :query="userQuery" @add="()=>console.log('Add pressed')" @delete="onDelete">
+      <template #create-dialog="{open,close}"><CreateUserDialog :model-value="open" @update:model-value="close" /></template>
+    </ThingTable>
   </div>
 </template>
