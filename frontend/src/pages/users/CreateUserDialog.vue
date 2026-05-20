@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { useQueryClient } from '@tanstack/vue-query'
   import { ref, watch } from 'vue'
   import { useDepartmentQuery } from '@/queries/DatabaseQueries'
   import { useBackendApiStore } from '@/stores/backendApi'
@@ -7,6 +8,7 @@
   const backendApiStore = useBackendApiStore()
   const departmentQuery = useDepartmentQuery()
   const messageStore = useStatusMessageStore()
+  const queryClient = useQueryClient()
 
   const firstName = ref('')
   const lastName = ref('')
@@ -18,6 +20,7 @@
     backendApiStore.post('/user', data).then(() => {
       model.value = false
       messageStore.displayMessage('Successfully created user', 'success')
+      queryClient.invalidateQueries(['users'])
     })
   }
 

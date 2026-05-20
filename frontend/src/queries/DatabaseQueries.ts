@@ -7,7 +7,7 @@ export function useUserQuery (): Query {
   return useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const response = await backendApiStore.get('/users')
+      const response = await backendApiStore.get('/pretty_users')
       return response.data
     },
     select: (data: any[]) =>

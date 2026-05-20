@@ -7,7 +7,7 @@
   const userQuery = useUserQuery()
   const queryClient = useQueryClient()
   const backendApiStore = useBackendApiStore()
-  const headers = [{ title: 'First Name', key: 'first_name' }, { title: 'Last Name', key: 'last_name' }, { title: 'Department ID', key: 'department_id' }, { title: 'Hired At', key: 'hired_at', isDate: true }]
+  const headers = [{ title: 'First Name', key: 'first_name' }, { title: 'Last Name', key: 'last_name' }, { title: 'Department', key: 'department_name' }, { title: 'Hired At', key: 'hired_at', isDate: true }]
 
   async function onDelete (id: number) {
     await backendApiStore._delete('/user/' + id)
