@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { Header } from '@/types/ThingTableTypes'
   import { ref } from 'vue'
+  import DeleteButton from '@/components/DeleteButton'
   const searchValue = ref('')
   const props = defineProps<{ headers: Header[], query: object }>()
   const headers = ref([...props.headers, { key: 'delete' }])
@@ -28,8 +29,10 @@
       />
     </div>
     <slot :close="() => dialogOpen = false" name="create-dialog" :open="dialogOpen" />
-    <v-data-table
+    <v-data-table-virtual
+      fixed-header
       :headers
+      height="450"
       :items="query.data.value ?? []"
       :search="searchValue"
     >
@@ -41,16 +44,7 @@
         {{ header.isDate ? new Date(item[header.key]).toDateString() : new Date(item[header.key]).toString() }}
       </template>
       <template #item.delete="thing">
-        <v-btn
-          color="red-lighten-1"
-          density="compact"
-          icon="mdi-delete"
-          rounded="lg"
-          size="x-large"
-          :style="{justifySelf:'end'}"
-          @click="$emit('delete',thing.item.id)"
-        />
+        <DeleteButton :name="thing.item.first_name + ' ' + thing.item.last_name" @confirm="$emit('delete',thing.item.id)" />
       </template>
-    </v-data-table>
-  </div>
+    </v-data-table-virtual></div>
 </template>
