@@ -5,12 +5,21 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_user);
     cfg.service(delete_user);
     cfg.service(get_users);
+    cfg.service(get_pretty_users);
     cfg.service(post_user);
 }
 
 #[get("/users")]
 async fn get_users(pool: web::Data<sqlx::MySqlPool>) -> impl Responder {
     match users::get_users(&pool).await {
+        Ok(user) => HttpResponse::Ok().json(user),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[get("/pretty_users")]
+async fn get_pretty_users(pool: web::Data<sqlx::MySqlPool>) -> impl Responder {
+    match users::get_pretty_users(&pool).await {
         Ok(user) => HttpResponse::Ok().json(user),
         Err(e) => sqlx_error_to_http(e),
     }
