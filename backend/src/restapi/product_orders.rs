@@ -91,7 +91,6 @@ async fn set_po_status(
     id: web::Path<i32>,
     body: web::Json<ProductOrderStatusPost>,
 ) -> impl Responder {
-    println!("HERE");
     match product_orders::set_po_status(&pool, *id, body.status_id).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),

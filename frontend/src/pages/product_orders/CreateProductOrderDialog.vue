@@ -10,11 +10,11 @@
   const messageStore = useStatusMessageStore()
   const queryClient = useQueryClient()
 
-  const address = ref('')
-  const product = ref(null)
+  const address = ref<string>('')
+  const productId = ref<number>(null)
 
   function createProductOrder () {
-    const data = { address: address.value, product_id: product.value }
+    const data = { address: address.value, product_id: productId.value }
     backendApiStore.post('/product_order', data).then(() => {
       model.value = false
       messageStore.displayMessage('Successfully created product order', 'success')
@@ -24,7 +24,7 @@
 
   function clearFields () {
     address.value = ''
-    product.value = null
+    productId.value = null
   }
 
   watch(model, val => {
@@ -47,7 +47,7 @@
           :style="{minWidth: '250px'}"
         />
         <v-autocomplete
-          v-model="product"
+          v-model="productId"
           hide-details="auto"
           item-title="name"
           item-value="id"

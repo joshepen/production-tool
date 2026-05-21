@@ -119,7 +119,6 @@ pub async fn set_po_status(
     id: i32,
     status_id: i32,
 ) -> Result<(), sqlx::Error> {
-    println!("STATUS ID {}", status_id);
     query!(
         "UPDATE product_orders SET status_id = ? WHERE id = ?",
         status_id,

@@ -8,7 +8,7 @@
   const messageStore = useStatusMessageStore()
   const queryClient = useQueryClient()
 
-  const name = ref('')
+  const name = ref<string>('')
 
   function createDepartment () {
     const data = { name: name.value }

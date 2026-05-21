@@ -3,15 +3,15 @@
   import { ref } from 'vue'
   import DeleteButton from '@/components/DeleteButton'
 
-  const searchValue = ref('')
+  const searchValue = ref<string>('')
   const props = defineProps<{
     headers: Header[]
     query: object
     getName: Function
     customColumns?: string[] // which keys get a passthrough slot
   }>()
-  const headers = ref([...props.headers, { key: 'delete' }])
-  const dialogOpen = ref(false)
+  const headers = ref<object[]>([...props.headers, { key: 'delete' }])
+  const dialogOpen = ref<boolean>(false)
   defineEmits(['delete'])
 </script>
 

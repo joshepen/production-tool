@@ -10,10 +10,10 @@
   const messageStore = useStatusMessageStore()
   const queryClient = useQueryClient()
 
-  const firstName = ref('')
-  const lastName = ref('')
-  const departmentId = ref(null)
-  const hiredAt = ref(new Date())
+  const firstName = ref<string>('')
+  const lastName = ref<string>('')
+  const departmentId = ref<number>(null)
+  const hiredAt = ref<Date>(new Date())
 
   function createUser () {
     const data = { first_name: firstName.value, last_name: lastName.value, department_id: departmentId.value, hired_at: hiredAt.value }
