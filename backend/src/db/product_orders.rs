@@ -16,6 +16,17 @@ pub struct ProductOrder {
     pub created_at: DateTime<Utc>,
 }
 
+#[derive(serde::Serialize)]
+pub struct PrettyProductOrder {
+    pub id: i32,
+    pub address: String,
+    pub product_id: i32,
+    pub product_name: String,
+    pub status_id: i32,
+    pub status_name: String,
+    pub created_at: DateTime<Utc>,
+}
+
 pub async fn get_product_order(
     pool: &sqlx::MySqlPool,
     id: i32,
@@ -40,6 +51,18 @@ pub async fn get_product_orders(pool: &sqlx::MySqlPool) -> Result<Vec<ProductOrd
     return Ok(product_orders);
 }
 
+pub async fn get_pretty_product_orders(
+    pool: &sqlx::MySqlPool,
+) -> Result<Vec<PrettyProductOrder>, sqlx::Error> {
+    let product_orders = query_as!(
+        PrettyProductOrder,
+        "SELECT o.id, o.address, o.product_id, p.name as product_name, o.status_id, s.name as status_name, o.created_at FROM product_orders o JOIN products p on o.product_id = p.id JOIN statuses s ON o.status_id = s.id ORDER BY o.status_id ASC"
+    )
+    .fetch_all(pool)
+    .await?;
+    return Ok(product_orders);
+}
+
 pub async fn get_product_orders_by_status(
     pool: &sqlx::MySqlPool,
     status_id: i32,
@@ -47,6 +70,19 @@ pub async fn get_product_orders_by_status(
     let product_orders = query_as!(
         ProductOrder,
         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o WHERE o.status_id = ?", status_id
+    )
+    .fetch_all(pool)
+    .await?;
+    return Ok(product_orders);
+}
+
+pub async fn get_pretty_product_orders_by_status(
+    pool: &sqlx::MySqlPool,
+    status_id: i32,
+) -> Result<Vec<PrettyProductOrder>, sqlx::Error> {
+    let product_orders = query_as!(
+        PrettyProductOrder,
+        "SELECT o.id, o.address, o.product_id, p.name as product_name, o.status_id, s.name as status_name, o.created_at FROM product_orders o JOIN products p on o.product_id = p.id JOIN statuses s ON o.status_id = s.id WHERE o.status_id = ? ORDER BY o.status_id ASC", status_id
     )
     .fetch_all(pool)
     .await?;

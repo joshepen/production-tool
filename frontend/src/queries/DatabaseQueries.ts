@@ -48,7 +48,7 @@ export function useProductOrderQuery (): Query {
   return useQuery({
     queryKey: ['product_orders'],
     queryFn: async () => {
-      const response = await backendApiStore.get('/product_orders')
+      const response = await backendApiStore.get('/pretty_product_orders')
       return response.data
     },
     select: (data: any[]) =>

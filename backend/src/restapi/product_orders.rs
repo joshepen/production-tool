@@ -18,6 +18,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(delete_product_order);
     cfg.service(post_product_order);
     cfg.service(set_po_status);
+    cfg.service(get_pretty_product_orders);
 }
 
 #[get("/product_orders")]
@@ -31,6 +32,23 @@ async fn get_product_orders(
             Err(e) => sqlx_error_to_http(e),
         },
         None => match product_orders::get_product_orders(&pool).await {
+            Ok(d) => HttpResponse::Ok().json(d),
+            Err(e) => sqlx_error_to_http(e),
+        },
+    }
+}
+
+#[get("/pretty_product_orders")]
+async fn get_pretty_product_orders(
+    pool: web::Data<sqlx::MySqlPool>,
+    query: web::Query<ProductOrderStatusQuery>,
+) -> impl Responder {
+    match query.status_id {
+        Some(s) => match product_orders::get_pretty_product_orders_by_status(&pool, s).await {
+            Ok(d) => HttpResponse::Ok().json(d),
+            Err(e) => sqlx_error_to_http(e),
+        },
+        None => match product_orders::get_pretty_product_orders(&pool).await {
             Ok(d) => HttpResponse::Ok().json(d),
             Err(e) => sqlx_error_to_http(e),
         },

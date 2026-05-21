@@ -7,7 +7,7 @@
   const productOrderQuery = useProductOrderQuery()
   const queryClient = useQueryClient()
   const backendApiStore = useBackendApiStore()
-  const headers = [{ title: 'Created At', key: 'created_at', isDatetime: true }, { title: 'Order ID', key: 'id' }, { title: 'Address', key: 'address' }]
+  const headers = [{ title: 'Created At', key: 'created_at', isDatetime: true }, { title: 'Order ID', key: 'id' }, { title: 'Status', key: 'status_name' }, { title: 'Address', key: 'address' }]
 
   async function onDelete (id: number) {
     await backendApiStore._delete('/product_order/' + id)
