@@ -61,3 +61,14 @@ export function useProductOrderQuery (): Query {
       ),
   })
 }
+
+export function useStatusQuery (): Query {
+  const backendApiStore = useBackendApiStore()
+  return useQuery({
+    queryKey: ['statuses'],
+    queryFn: async () => {
+      const response = await backendApiStore.get('/statuses')
+      return response.data
+    },
+  })
+}
