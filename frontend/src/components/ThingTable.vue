@@ -7,7 +7,7 @@
   const headers = ref([...props.headers, { key: 'delete' }])
   const dialogOpen = ref(false)
 
-  defineEmits(['add', 'delete'])
+  defineEmits(['delete'])
 </script>
 <template>
   <div :style="{display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center'}">
@@ -41,7 +41,13 @@
         :key="header.key"
         #[`item.${header.key}`]="{ item }"
       >
-        {{ header.isDate ? new Date(item[header.key]).toDateString() : new Date(item[header.key]).toString() }}
+        {{ header.isDate ? new Date(item[header.key]).toDateString() : new Date(item[header.key]).toLocaleString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }) }}
       </template>
       <template #item.delete="thing">
         <DeleteButton :name="getName(thing.item)" @confirm="$emit('delete',thing.item.id)" />

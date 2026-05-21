@@ -26,7 +26,6 @@
       :get-name
       :headers
       :query="userQuery"
-      @add="()=>console.log('Add pressed')"
       @delete="onDelete"
     >
       <template #create-dialog="{open,close}"><CreateUserDialog :model-value="open" @update:model-value="close" /></template>

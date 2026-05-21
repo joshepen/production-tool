@@ -26,7 +26,6 @@
       :get-name
       :headers
       :query="productQuery"
-      @add="()=>console.log('Add pressed')"
       @delete="onDelete"
     >
       <template #create-dialog="{open,close}"><CreateProductDialog :model-value="open" @update:model-value="close" /></template>
