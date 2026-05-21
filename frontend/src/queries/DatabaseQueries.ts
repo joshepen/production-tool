@@ -2,7 +2,7 @@ import type { ProductOrder, User } from '@/types/databaseTypes'
 import { useQuery } from '@tanstack/vue-query'
 import { useBackendApiStore } from '@/stores/backendApi'
 
-export function useUserQuery (): Query {
+export function useUserQuery(): Query {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['users'],
@@ -12,7 +12,7 @@ export function useUserQuery (): Query {
     },
     select: (data: any[]) =>
       data.map(
-        item =>
+        (item) =>
           ({
             ...item,
             hired_at: new Date(item.hired_at),
@@ -21,7 +21,7 @@ export function useUserQuery (): Query {
   })
 }
 
-export function useDepartmentQuery (): Query {
+export function useDepartmentQuery(): Query {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['departments'],
@@ -32,7 +32,7 @@ export function useDepartmentQuery (): Query {
   })
 }
 
-export function useProductQuery (): Query {
+export function useProductQuery(): Query {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['products'],
@@ -43,7 +43,7 @@ export function useProductQuery (): Query {
   })
 }
 
-export function useProductOrderQuery (): Query {
+export function useProductOrderQuery(): Query {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['product_orders'],
@@ -53,7 +53,7 @@ export function useProductOrderQuery (): Query {
     },
     select: (data: any[]) =>
       data.map(
-        item =>
+        (item) =>
           ({
             ...item,
             created_at: new Date(item.created_at),
@@ -62,7 +62,7 @@ export function useProductOrderQuery (): Query {
   })
 }
 
-export function useStatusQuery (): Query {
+export function useStatusQuery(): Query {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['statuses'],

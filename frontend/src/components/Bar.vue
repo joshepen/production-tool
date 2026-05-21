@@ -1,8 +1,13 @@
-<script setup lang=ts>
-  import { useRouter } from 'vue-router'
-  const router = useRouter()
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
-  const buttons = [{ name: 'Users', path: '/users' }, { name: 'Departments', path: '/departments' }, { name: 'Products', path: '/products' }, { name: 'Product Orders', path: '/product_orders' }]
+const buttons = [
+  { name: 'Users', path: '/users' },
+  { name: 'Departments', path: '/departments' },
+  { name: 'Products', path: '/products' },
+  { name: 'Product Orders', path: '/product_orders' },
+]
 </script>
 
 <template>
