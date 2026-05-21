@@ -44,6 +44,7 @@
           item-value="id"
           :items="statusQuery.data.value"
           :model-value="item.status_name"
+          :style="{ display: 'flex', alignItems: 'center', margin: '0' }"
           variant="plain"
           @update:model-value="(newId) => handleStatusChange(item, newId)"
         />
