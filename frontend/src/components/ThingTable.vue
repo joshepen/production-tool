@@ -3,7 +3,7 @@
   import { ref } from 'vue'
   import DeleteButton from '@/components/DeleteButton'
   const searchValue = ref('')
-  const props = defineProps<{ headers: Header[], query: object }>()
+  const props = defineProps<{ headers: Header[], query: object, getName: Function }>()
   const headers = ref([...props.headers, { key: 'delete' }])
   const dialogOpen = ref(false)
 
@@ -44,7 +44,7 @@
         {{ header.isDate ? new Date(item[header.key]).toDateString() : new Date(item[header.key]).toString() }}
       </template>
       <template #item.delete="thing">
-        <DeleteButton :name="thing.item.first_name + ' ' + thing.item.last_name" @confirm="$emit('delete',thing.item.id)" />
+        <DeleteButton :name="getName(thing.item)" @confirm="$emit('delete',thing.item.id)" />
       </template>
     </v-data-table-virtual></div>
 </template>

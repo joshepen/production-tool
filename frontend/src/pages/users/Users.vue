@@ -13,12 +13,22 @@
     await backendApiStore._delete('/user/' + id)
     queryClient.invalidateQueries(['users'])
   }
+
+  function getName (user: User): string {
+    return user.first_name + ' ' + user.last_name
+  }
 </script>
 
 <template>
   <div :style="{display: 'flex', flexDirection: 'column', margin: '10px'}">
     <h1>Users</h1>
-    <ThingTable :headers :query="userQuery" @add="()=>console.log('Add pressed')" @delete="onDelete">
+    <ThingTable
+      :get-name
+      :headers
+      :query="userQuery"
+      @add="()=>console.log('Add pressed')"
+      @delete="onDelete"
+    >
       <template #create-dialog="{open,close}"><CreateUserDialog :model-value="open" @update:model-value="close" /></template>
     </ThingTable>
   </div>
