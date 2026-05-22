@@ -11,20 +11,20 @@ const messageStore = useStatusMessageStore()
 const queryClient = useQueryClient()
 
 const address = ref<string>('')
-const productId = ref<number>(null)
+const productId = ref<number>(0)
 
 function createProductOrder() {
   const data = { address: address.value, product_id: productId.value }
   backendApiStore.post('/product_order', data).then(() => {
     model.value = false
     messageStore.displayMessage('Successfully created product order', 'success')
-    queryClient.invalidateQueries(['product_orders'])
+    queryClient.invalidateQueries({ queryKey: ['product_orders'] })
   })
 }
 
 function clearFields() {
   address.value = ''
-  productId.value = null
+  productId.value = 0
 }
 
 watch(model, (val) => {

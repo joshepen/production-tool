@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { Department } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
 import ThingTable from '@/components/ThingTable.vue'
-import CreateDepartmentDialog from '@/pages/departments/CreateDepartmentDialog'
+import CreateDepartmentDialog from '@/pages/departments/CreateDepartmentDialog.vue'
 import { useDepartmentQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 const departmentQuery = useDepartmentQuery()
@@ -11,7 +12,7 @@ const headers = [{ title: 'Department Name', key: 'name' }]
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/department/' + id)
-  queryClient.invalidateQueries(['departments'])
+  queryClient.invalidateQueries({ queryKey: ['departments'] })
 }
 
 function getName(department: Department): string {

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { Product } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
 import ThingTable from '@/components/ThingTable.vue'
-import CreateProductDialog from '@/pages/products/CreateProductDialog'
+import CreateProductDialog from '@/pages/products/CreateProductDialog.vue'
 import { useProductQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 const productQuery = useProductQuery()
@@ -11,7 +12,7 @@ const headers = [{ title: 'Product Name', key: 'name' }]
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/product/' + id)
-  queryClient.invalidateQueries(['products'])
+  queryClient.invalidateQueries({ queryKey: ['products'] })
 }
 
 function getName(product: Product): string {

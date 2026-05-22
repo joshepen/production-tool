@@ -1,8 +1,8 @@
-import type { ProductOrder, User } from '@/types/databaseTypes'
+import type { ProductOrder, User } from '@/types/DatabaseTypes'
 import { useQuery } from '@tanstack/vue-query'
 import { useBackendApiStore } from '@/stores/backendApi'
 
-export function useUserQuery(): Query {
+export function useUserQuery() {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['users'],
@@ -21,7 +21,7 @@ export function useUserQuery(): Query {
   })
 }
 
-export function useDepartmentQuery(): Query {
+export function useDepartmentQuery() {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['departments'],
@@ -32,7 +32,7 @@ export function useDepartmentQuery(): Query {
   })
 }
 
-export function useProductQuery(): Query {
+export function useProductQuery() {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['products'],
@@ -43,7 +43,7 @@ export function useProductQuery(): Query {
   })
 }
 
-export function useProductOrderQuery(): Query {
+export function useProductOrderQuery() {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['product_orders'],
@@ -62,7 +62,7 @@ export function useProductOrderQuery(): Query {
   })
 }
 
-export function useStatusQuery(): Query {
+export function useStatusQuery() {
   const backendApiStore = useBackendApiStore()
   return useQuery({
     queryKey: ['statuses'],

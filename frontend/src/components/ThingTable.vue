@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import type { Header } from '@/types/ThingTableTypes'
+import type { UseQueryReturnType } from '@tanstack/vue-query'
 import { ref } from 'vue'
-import DeleteButton from '@/components/DeleteButton'
+import DeleteButton from '@/components/DeleteButton.vue'
 
 const searchValue = ref<string>('')
 const props = defineProps<{
   headers: Header[]
-  query: object
+  query: UseQueryReturnType<any[], Error>
   getName: Function
   customColumns?: string[] // which keys get a passthrough slot
 }>()
-const headers = ref<object[]>([...props.headers, { key: 'delete' }])
+const headers = ref<Header[]>([...props.headers, { key: 'delete', title: '' }])
 const dialogOpen = ref<boolean>(false)
 defineEmits(['delete'])
 </script>
