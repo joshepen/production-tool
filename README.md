@@ -5,15 +5,15 @@ Production Tool is a simple system that tracks some generic users, products, and
 ## Prerequisites
 - `npm` to build the frontend
     - And some way to host the server
-- `rust` for backend
+- `rust` and `cargo` for backend
 - `docker` for database
 
 ## Dev Build Instructions
-> Note that the following build scripts were written for Linux. I don't know a whole lot about Windows Powershell or whatever MacOS uses but I don't imagine the scripts will work there
+> Note that the following build scripts are bash scripts. I don't know a whole lot about Windows Powershell or whatever MacOS uses but I don't imagine the scripts will work there
 - Run `./scripts/build.sh` from the root of the project. This script does the following:
     - Docker composes database
     - Builds Rust backend
-    - Installs npm packages
+    - Installs npm packages and builds (even though run script doesn't use the frontend build)
 - Running `./scripts/run.sh` will run everything, with the frontend being run in dev mode. 
     - For a production environment the frontend could be built `npm run build` and run with some other web server, but that's another dependency that I don't want to control here so do it yourself if you really wanna lol
 - Additional things you will have to manually configure:
