@@ -12,7 +12,7 @@ const queryClient = useQueryClient()
 
 const firstName = ref<string>('')
 const lastName = ref<string>('')
-const departmentId = ref<number>(null)
+const departmentId = ref<number>(0)
 const hiredAt = ref<Date>(new Date())
 
 function createUser() {
@@ -25,14 +25,14 @@ function createUser() {
   backendApiStore.post('/user', data).then(() => {
     model.value = false
     messageStore.displayMessage('Successfully created user', 'success')
-    queryClient.invalidateQueries(['users'])
+    queryClient.invalidateQueries({ queryKey: ['users'] })
   })
 }
 
 function clearFields() {
   firstName.value = ''
   lastName.value = ''
-  departmentId.value = null
+  departmentId.value = 0
   hiredAt.value = new Date()
 }
 

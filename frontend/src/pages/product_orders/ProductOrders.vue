@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { ProductOrder } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
 import ThingTable from '@/components/ThingTable.vue'
-import CreateProductOrderDialog from '@/pages/product_orders/CreateProductOrderDialog'
+import CreateProductOrderDialog from '@/pages/product_orders/CreateProductOrderDialog.vue'
 import { useProductOrderQuery, useStatusQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 const productOrderQuery = useProductOrderQuery()
@@ -17,16 +18,16 @@ const headers = [
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/product_order/' + id)
-  queryClient.invalidateQueries(['product_orders'])
+  queryClient.invalidateQueries({ queryKey: ['product_orders'] })
 }
 
 function getName(productOrder: ProductOrder): string {
   return 'Order ' + productOrder.id + ' to ' + productOrder.address
 }
 
-function handleStatusChange(po: ProductOrder, status_id) {
+function handleStatusChange(po: ProductOrder, status_id: number) {
   backendApiStore.post(`/product_order/${po.id}/status`, { status_id }).then(() => {
-    queryClient.invalidateQueries(['product_orders'])
+    queryClient.invalidateQueries({ queryKey: ['product_orders'] })
   })
 }
 </script>

@@ -17,7 +17,7 @@ function createProduct() {
   backendApiStore.post('/product', data).then(() => {
     model.value = false
     messageStore.displayMessage('Successfully created product', 'success')
-    queryClient.invalidateQueries(['products'])
+    queryClient.invalidateQueries({ queryKey: ['products'] })
   })
 }
 

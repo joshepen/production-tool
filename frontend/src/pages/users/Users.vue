@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { User } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
 import ThingTable from '@/components/ThingTable.vue'
-import CreateUserDialog from '@/pages/users/CreateUserDialog'
+import CreateUserDialog from '@/pages/users/CreateUserDialog.vue'
 import { useUserQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 const userQuery = useUserQuery()
@@ -16,9 +17,8 @@ const headers = [
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/user/' + id)
-  queryClient.invalidateQueries(['users'])
+  queryClient.invalidateQueries({ queryKey: ['users'] })
 }
-
 function getName(user: User): string {
   return user.first_name + ' ' + user.last_name
 }

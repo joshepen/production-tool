@@ -15,7 +15,7 @@ function createDepartment() {
   backendApiStore.post('/department', data).then(() => {
     model.value = false
     messageStore.displayMessage('Successfully created department', 'success')
-    queryClient.invalidateQueries(['departments'])
+    queryClient.invalidateQueries({ queryKey: ['departments'] })
   })
 }
 

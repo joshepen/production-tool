@@ -3,6 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-import Users from '@/pages/users/Users'
+import Users from '@/pages/users/Users.vue'
 // I don't have anything in mind for the home page rn so it's just gonna be the user page for now
 </script>

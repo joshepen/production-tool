@@ -17,6 +17,12 @@ async fn main() -> Result<(), sqlx::Error> {
         )
         .await?;
 
+    let host = env::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
+    let port: u16 = env::var("PORT")
+        .unwrap_or_else(|_| "8001".to_string())
+        .parse()
+        .expect("PORT must be a valid number");
+
     HttpServer::new(move || {
         let cors = Cors::permissive();
 
@@ -25,7 +31,7 @@ async fn main() -> Result<(), sqlx::Error> {
             .configure(restapi::configure)
             .wrap(cors)
     })
-    .bind(("127.0.0.1", 8001))?
+    .bind((host.as_str(), port))?
     .run()
     .await?;
 
