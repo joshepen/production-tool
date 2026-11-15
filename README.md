@@ -24,3 +24,5 @@ Production Tool is a simple system that tracks some generic users, products, and
         - If you changed the database port, change `3306` accordingly
     - (Optional) If you want to change the address for the REST API, add `HOST` and `PORT` env variables to your `.env` or elsewhere
         - If you do change the backend address, you need to add a `.env` to `frontend/` and add the address as `VITE_BACKEND_URL`. Otherwise it defaults to `http://localhost:8001`
+
+Wazzap

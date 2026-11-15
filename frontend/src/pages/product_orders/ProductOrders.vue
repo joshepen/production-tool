@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import type { ProductOrder } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
+import { useRouter } from 'vue-router'
 import ThingTable from '@/components/ThingTable.vue'
 import CreateProductOrderDialog from '@/pages/product_orders/CreateProductOrderDialog.vue'
 import { useProductOrderQuery, useStatusQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
+
 const productOrderQuery = useProductOrderQuery()
 const statusQuery = useStatusQuery()
 const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
+const router = useRouter()
+
 const headers = [
   { title: 'Created At', key: 'created_at', isDatetime: true },
   { title: 'Order ID', key: 'id' },
+  { title: 'Product', key: 'product_name' },
   { title: 'Status', key: 'status_id' },
   { title: 'Address', key: 'address' },
+  { title: 'Work Orders', key: 'work_orders' },
 ]
 
 async function onDelete(id: number) {
@@ -30,13 +36,17 @@ function handleStatusChange(po: ProductOrder, status_id: number) {
     queryClient.invalidateQueries({ queryKey: ['product_orders'] })
   })
 }
+
+function navigateToWorkOrders(po: ProductOrder) {
+  router.push(`/work_orders/${po.id}`)
+}
 </script>
 
 <template>
   <div :style="{ display: 'flex', flexDirection: 'column', margin: '10px' }">
     <h1>Product Orders</h1>
     <ThingTable
-      :custom-columns="['status_id']"
+      :custom-columns="['status_id', 'work_orders']"
       :get-name
       :headers
       :query="productOrderQuery"
@@ -56,6 +66,11 @@ function handleStatusChange(po: ProductOrder, status_id: number) {
           variant="plain"
           @update:model-value="(newId) => handleStatusChange(item, newId)"
         />
+      </template>
+      <template #item.work_orders="{ item }">
+        <v-btn variant="text" size="small" @click="navigateToWorkOrders(item)">
+          View Work Orders
+        </v-btn>
       </template>
     </ThingTable>
   </div>

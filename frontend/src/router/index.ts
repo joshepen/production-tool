@@ -11,6 +11,8 @@ import Index from '@/pages/index.vue'
 import ProductOrders from '@/pages/product_orders/ProductOrders.vue'
 import Products from '@/pages/products/Products.vue'
 import Users from '@/pages/users/Users.vue'
+import WorkCenters from '@/pages/work_centers/WorkCenters.vue'
+import WorkOrders from '@/pages/work_orders/WorkOrders.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +36,14 @@ const router = createRouter({
     {
       path: '/product_orders',
       component: ProductOrders,
+    },
+    {
+      path: '/work_centers',
+      component: WorkCenters,
+    },
+    {
+      path: '/work_orders/:productOrderId',
+      component: WorkOrders,
     },
   ],
 })

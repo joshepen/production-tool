@@ -7,6 +7,7 @@ const buttons = [
   { name: 'Departments', path: '/departments' },
   { name: 'Products', path: '/products' },
   { name: 'Product Orders', path: '/product_orders' },
+  { name: 'Work Centers', path: '/work_centers' },
 ]
 </script>
 
