@@ -43,7 +43,8 @@ pub async fn get_work_orders(
         WorkOrder,
         "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, wo.started_at, wo.completed_at
          FROM work_orders wo
-         JOIN product_work_centers pwc ON wo.product_order_id = pwc.product_id AND wo.step_order = pwc.step_order
+         JOIN product_orders po ON wo.product_order_id = po.id
+         JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order
          WHERE wo.product_order_id = ? ORDER BY wo.step_order",
         product_order_id
     )
@@ -177,6 +178,25 @@ pub async fn complete_work_order(
     )
     .execute(pool)
     .await?;
+
+    // When every work order for the product order is completed, mark the
+    // product order itself as completed.
+    let remaining = query!(
+        "SELECT COUNT(*) AS cnt FROM work_orders WHERE product_order_id = ? AND status_id != 5",
+        current.product_order_id
+    )
+    .fetch_one(pool)
+    .await?;
+
+    if remaining.cnt == 0 {
+        query!(
+            "UPDATE product_orders SET status_id = 5 WHERE id = ?",
+            current.product_order_id
+        )
+        .execute(pool)
+        .await?;
+    }
+
     return Ok(());
 }
 

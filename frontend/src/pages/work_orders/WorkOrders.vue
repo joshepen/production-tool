@@ -16,7 +16,7 @@ const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
 
 const headers = [
-  { title: 'Step Order', key: 'template_step_order' },
+  { title: 'Step Order', key: 'step_order' },
   { title: 'Work Center', key: 'work_center_name' },
   { title: 'Status', key: 'status_name' },
   { title: 'Estimated Hours', key: 'estimated_hours' },

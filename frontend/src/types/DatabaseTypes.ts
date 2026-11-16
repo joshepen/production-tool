@@ -31,6 +31,13 @@ export interface WorkCenter {
   description?: string
 }
 
+export interface ProductWorkCenter {
+  product_id: number
+  step_order: number
+  work_center_id: number
+  work_center_name: string
+}
+
 
 export interface WorkOrder {
   id: number

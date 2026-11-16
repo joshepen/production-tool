@@ -93,14 +93,40 @@ pub async fn create_product_order(
     pool: &sqlx::MySqlPool,
     po: &NewProductOrder,
 ) -> Result<u64, sqlx::Error> {
+    let mut conn = pool.begin().await?;
+
     let result = query!(
         "INSERT INTO product_orders (address, product_id, status_id) VALUES (?, ?, 1)",
         po.address,
         po.product_id
     )
-    .execute(pool)
+    .execute(&mut *conn)
     .await?;
-    return Ok(result.last_insert_id());
+
+    let product_order_id = result.last_insert_id();
+
+    // A product order's work orders come from the product's work center recipe
+    // (product_work_centers), not from anything chosen on the order itself.
+    let steps = query!(
+        "SELECT step_order FROM product_work_centers WHERE product_id = ? ORDER BY step_order",
+        po.product_id
+    )
+    .fetch_all(&mut *conn)
+    .await?;
+
+    for step in &steps {
+        query!(
+            "INSERT INTO work_orders (product_order_id, step_order, status_id) VALUES (?, ?, 1)",
+            product_order_id,
+            step.step_order
+        )
+        .execute(&mut *conn)
+        .await?;
+    }
+
+    conn.commit().await?;
+
+    return Ok(product_order_id);
 }
 
 pub async fn delete_product_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {

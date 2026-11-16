@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS work_centers (
 CREATE TABLE IF NOT EXISTS product_work_centers (
 	product_id INT,
 	step_order INT,
-	work_center_id INT,
+	work_center_id INT NOT NULL,
 	PRIMARY KEY (product_id, step_order),
 	FOREIGN KEY (product_id) REFERENCES products(id),
 	FOREIGN KEY (work_center_id) REFERENCES work_centers(id)

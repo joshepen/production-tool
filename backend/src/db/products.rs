@@ -3,6 +3,7 @@ use sqlx::{query, query_as};
 #[derive(serde::Deserialize)]
 pub struct NewProduct {
     pub name: String,
+    pub work_center_ids: Vec<i32>,
 }
 
 #[derive(serde::Serialize)]
@@ -31,11 +32,30 @@ pub async fn get_products(pool: &sqlx::MySqlPool) -> Result<Vec<Product>, sqlx::
 }
 
 pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<u64, sqlx::Error> {
+    let mut conn = pool.begin().await?;
+
     let result = query!("INSERT INTO products (name) VALUES (?)", p.name,)
-        .execute(pool)
+        .execute(&mut *conn)
         .await?;
 
-    return Ok(result.last_insert_id());
+    let product_id = result.last_insert_id();
+
+    // Insert work center steps (recipe)
+    for (index, work_center_id) in p.work_center_ids.iter().enumerate() {
+        let step_order = (index + 1) as i32;
+        query!(
+            "INSERT INTO product_work_centers (product_id, step_order, work_center_id) VALUES (?, ?, ?)",
+            product_id,
+            step_order,
+            work_center_id
+        )
+        .execute(&mut *conn)
+        .await?;
+    }
+
+    conn.commit().await?;
+
+    return Ok(product_id);
 }
 
 pub async fn delete_product(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {

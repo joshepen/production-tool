@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { useQueryClient } from '@tanstack/vue-query'
 import { ref, watch } from 'vue'
-import { useDepartmentQuery } from '@/queries/DatabaseQueries'
+import { useWorkCenterQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useStatusMessageStore } from '@/stores/statusMessage'
 const model = defineModel<boolean>()
 const backendApiStore = useBackendApiStore()
-const departmentQuery = useDepartmentQuery()
+const workCenterQuery = useWorkCenterQuery()
 const messageStore = useStatusMessageStore()
 const queryClient = useQueryClient()
 
 const name = ref<string>('')
+const workCenterIds = ref<number[]>([])
 
 function createProduct() {
-  const data = { name: name.value }
+  const data = { name: name.value, work_center_ids: workCenterIds.value }
   backendApiStore.post('/product', data).then(() => {
     model.value = false
     messageStore.displayMessage('Successfully created product', 'success')
@@ -23,6 +24,7 @@ function createProduct() {
 
 function clearFields() {
   name.value = ''
+  workCenterIds.value = []
 }
 
 watch(model, (val) => {
@@ -51,6 +53,18 @@ watch(model, (val) => {
           hide-details="auto"
           label="Product Name"
           :style="{ minWidth: '250px' }"
+        />
+        <v-autocomplete
+          v-model="workCenterIds"
+          multiple
+          chips
+          closable-chips
+          hide-details="auto"
+          item-title="name"
+          item-value="id"
+          :items="workCenterQuery.data.value ?? []"
+          label="Work centers (in order)"
+          :style="{ minWidth: '320px' }"
         />
       </div>
       <template #actions>
