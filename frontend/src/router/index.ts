@@ -13,6 +13,7 @@ import Products from '@/pages/products/Products.vue'
 import Users from '@/pages/users/Users.vue'
 import WorkCenters from '@/pages/work_centers/WorkCenters.vue'
 import WorkOrders from '@/pages/work_orders/WorkOrders.vue'
+import AllWorkOrders from '@/pages/work_orders/AllWorkOrders.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,10 @@ const router = createRouter({
     {
       path: '/work_centers',
       component: WorkCenters,
+    },
+    {
+      path: '/work_orders',
+      component: AllWorkOrders,
     },
     {
       path: '/work_orders/:productOrderId',
