@@ -3,6 +3,7 @@ pub mod product_orders;
 pub mod product_work_centers;
 pub mod products;
 pub mod statuses;
+pub mod user_types;
 pub mod users;
 pub mod work_centers;
 pub mod work_orders;

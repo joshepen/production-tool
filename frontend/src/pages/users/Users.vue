@@ -12,6 +12,7 @@ const headers = [
   { title: 'First Name', key: 'first_name' },
   { title: 'Last Name', key: 'last_name' },
   { title: 'Department', key: 'department_name' },
+  { title: 'User Type', key: 'user_type_name' },
   { title: 'Hired At', key: 'hired_at', isDate: true },
 ]
 

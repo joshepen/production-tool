@@ -4,7 +4,13 @@ export interface User {
   last_name: string
   department_id: number
   department_name: string
+  user_type_id: number
   hired_at: Date
+}
+
+export interface UserType {
+  id: number
+  name: string
 }
 
 export interface Department {

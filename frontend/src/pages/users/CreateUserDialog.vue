@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { useQueryClient } from '@tanstack/vue-query'
 import { ref, watch } from 'vue'
-import { useDepartmentQuery } from '@/queries/DatabaseQueries'
+import { useDepartmentQuery, useUserTypeQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useStatusMessageStore } from '@/stores/statusMessage'
 const model = defineModel<boolean>()
 const backendApiStore = useBackendApiStore()
 const departmentQuery = useDepartmentQuery()
+const userTypeQuery = useUserTypeQuery()
 const messageStore = useStatusMessageStore()
 const queryClient = useQueryClient()
 
 const firstName = ref<string>('')
 const lastName = ref<string>('')
 const departmentId = ref<number>(0)
+const userTypeId = ref<number>(0)
 const hiredAt = ref<Date>(new Date())
 
 function createUser() {
@@ -20,6 +22,7 @@ function createUser() {
     first_name: firstName.value,
     last_name: lastName.value,
     department_id: departmentId.value,
+    user_type_id: userTypeId.value,
     hired_at: hiredAt.value,
   }
   backendApiStore.post('/user', data).then(() => {
@@ -33,6 +36,7 @@ function clearFields() {
   firstName.value = ''
   lastName.value = ''
   departmentId.value = 0
+  userTypeId.value = 0
   hiredAt.value = new Date()
 }
 
@@ -79,6 +83,15 @@ watch(model, (val) => {
           item-value="id"
           :items="departmentQuery.data.value"
           label="Department"
+          :style="{ minWidth: '300px' }"
+        />
+        <v-autocomplete
+          v-model="userTypeId"
+          hide-details="auto"
+          item-title="name"
+          item-value="id"
+          :items="userTypeQuery.data.value"
+          label="User Type"
           :style="{ minWidth: '300px' }"
         />
         <v-date-picker

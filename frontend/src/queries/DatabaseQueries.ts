@@ -1,4 +1,4 @@
-import type { ProductOrder, User, WorkCenter, PrettyWorkOrder, ProductWorkCenter } from '@/types/DatabaseTypes'
+import type { ProductOrder, User, WorkCenter, PrettyWorkOrder, ProductWorkCenter, UserType } from '@/types/DatabaseTypes'
 import { useQuery } from '@tanstack/vue-query'
 import { useBackendApiStore } from '@/stores/backendApi'
 
@@ -122,5 +122,16 @@ export function useProductWorkCenterQuery(productId: number) {
           }) as ProductWorkCenter,
       ),
     enabled: productId > 0,
+  })
+}
+
+export function useUserTypeQuery() {
+  const backendApiStore = useBackendApiStore()
+  return useQuery({
+    queryKey: ['user_types'],
+    queryFn: async () => {
+      const response = await backendApiStore.get('/user_types')
+      return response.data
+    },
   })
 }

@@ -5,13 +5,20 @@ CREATE TABLE IF NOT EXISTS departments (
 	name VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS user_types (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS users (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50) NOT NULL,
 	hired_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	department_id INT NOT NULL,
-	FOREIGN KEY (department_id) REFERENCES departments(id)
+	user_type_id INT NOT NULL DEFAULT 1,
+	FOREIGN KEY (department_id) REFERENCES departments(id),
+	FOREIGN KEY (user_type_id) REFERENCES user_types(id)
 );
 
 CREATE TABLE IF NOT EXISTS products (
