@@ -11,7 +11,7 @@ const departmentQuery = useDepartmentQuery()
 const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
 const editingId = ref<number>(0)
-const headers = [{ title: 'Department Name', key: 'name' }, { title: 'Edit', key: 'edit' }]
+const headers = [{ title: 'Department Name', key: 'name' }, { title: '', key: 'edit', width: '80px' }]
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/department/' + id)

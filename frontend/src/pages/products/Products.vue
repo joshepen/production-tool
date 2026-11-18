@@ -14,7 +14,7 @@ const editingId = ref<number>(0)
 const headers = [
   { title: 'Product Name', key: 'name' },
   { title: 'Work Centers', key: 'work_centers' },
-  { title: 'Edit', key: 'edit' },
+  { title: '', key: 'edit', width: '80px' },
 ]
 
 async function onDelete(id: number) {

@@ -11,7 +11,7 @@ const workCenterQuery = useWorkCenterQuery()
 const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
 const editingId = ref<number>(0)
-const headers = [{ title: 'Name', key: 'name' }, { title: 'Description', key: 'description' }, { title: 'Edit', key: 'edit' }]
+const headers = [{ title: 'Name', key: 'name' }, { title: 'Description', key: 'description' }, { title: '', key: 'edit', width: '80px' }]
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/work_center/' + id)

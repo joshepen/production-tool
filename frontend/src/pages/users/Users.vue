@@ -17,7 +17,7 @@ const headers = [
   { title: 'Department', key: 'department_name' },
   { title: 'User Type', key: 'user_type_name' },
   { title: 'Hired At', key: 'hired_at', isDate: true },
-  { title: 'Edit', key: 'edit' },
+  { title: '', key: 'edit', width: '80px' },
 ]
 
 async function onDelete(id: number) {

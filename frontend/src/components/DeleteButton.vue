@@ -9,12 +9,10 @@ const open = ref<boolean>(false)
   <v-btn
     color="red-lighten-1"
     density="compact"
-    icon="mdi-delete"
-    rounded="lg"
-    size="x-large"
-    :style="{ justifySelf: 'end' }"
+    variant="text"
+    :style="{ minWidth: '0', padding: '0 4px' }"
     @click="open = true"
-  />
+  >Delete</v-btn>
   <v-dialog v-model="open" width="auto">
     <v-card>
       <v-card-item>

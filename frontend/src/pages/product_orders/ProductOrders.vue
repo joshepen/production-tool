@@ -22,7 +22,7 @@ const headers = [
   { title: 'Status', key: 'status_id' },
   { title: 'Address', key: 'address' },
   { title: 'Work Orders', key: 'work_orders' },
-  { title: 'Edit', key: 'edit' },
+  { title: '', key: 'edit', width: '80px' },
 ]
 
 async function onDelete(id: number) {
