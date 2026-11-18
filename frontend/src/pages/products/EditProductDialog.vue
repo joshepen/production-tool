@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useWorkCenterQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
@@ -24,6 +24,10 @@ async function loadProduct() {
   workCenterIds.value = wcRes.data.map((w: any) => w.work_center_id)
 }
 
+onMounted(() => {
+  loadProduct()
+})
+
 function close() {
   emit('update:open', false)
 }
@@ -37,8 +41,8 @@ function saveProduct() {
   })
 }
 
-watch(() => props.open, (val) => {
-  if (val) {
+watch(() => props.id, () => {
+  if (props.open) {
     loadProduct()
   }
 })

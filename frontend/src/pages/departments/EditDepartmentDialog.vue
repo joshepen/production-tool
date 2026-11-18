@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useStatusMessageStore } from '@/stores/statusMessage'
@@ -19,6 +19,10 @@ async function loadDepartment() {
   name.value = res.data.name
 }
 
+onMounted(() => {
+  loadDepartment()
+})
+
 function close() {
   emit('update:open', false)
 }
@@ -31,8 +35,8 @@ function saveDepartment() {
   })
 }
 
-watch(() => props.open, (val) => {
-  if (val) {
+watch(() => props.id, () => {
+  if (props.open) {
     loadDepartment()
   }
 })

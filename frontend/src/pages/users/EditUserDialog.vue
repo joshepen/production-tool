@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useDepartmentQuery, useUserTypeQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
@@ -22,13 +22,17 @@ const hiredAt = ref<Date>(new Date())
 
 async function loadUser() {
   if (!props.id) return
-  const res = await backendApiStore.get(`/user/${props.id}`)
-  firstName.value = res.data.first_name
+    const res = await backendApiStore.get(`/user/${props.id}`)
+    firstName.value = res.data.first_name
   lastName.value = res.data.last_name
   departmentId.value = res.data.department_id
   userTypeId.value = res.data.user_type_id
   hiredAt.value = new Date(res.data.hired_at)
 }
+
+onMounted(() => {
+    loadUser()
+})
 
 function close() {
   emit('update:open', false)
@@ -49,8 +53,8 @@ function saveUser() {
   })
 }
 
-watch(() => props.open, (val) => {
-  if (val) {
+watch(() => props.id, () => {
+  if (props.open) {
     loadUser()
   }
 })

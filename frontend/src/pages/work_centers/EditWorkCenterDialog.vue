@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useStatusMessageStore } from '@/stores/statusMessage'
@@ -21,6 +21,16 @@ async function loadWorkCenter() {
   description.value = res.data.description ?? ''
 }
 
+onMounted(() => {
+  if (props.open) {
+    loadWorkCenter()
+  }
+})
+
+onMounted(() => {
+  loadWorkCenter()
+})
+
 function close() {
   emit('update:open', false)
 }
@@ -33,8 +43,8 @@ function saveWorkCenter() {
   })
 }
 
-watch(() => props.open, (val) => {
-  if (val) {
+watch(() => props.id, () => {
+  if (props.open) {
     loadWorkCenter()
   }
 })

@@ -29,7 +29,7 @@ function getName(user: User): string {
 }
 
 function onEdit(user: User) {
-  editingId.value = user.id
+    editingId.value = user.id
 }
 </script>
 

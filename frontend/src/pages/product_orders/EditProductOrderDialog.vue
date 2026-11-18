@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useProductQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
@@ -23,6 +23,10 @@ async function loadProductOrder() {
   productId.value = res.data.product_id
 }
 
+onMounted(() => {
+  loadProductOrder()
+})
+
 function close() {
   emit('update:open', false)
 }
@@ -35,8 +39,8 @@ function saveProductOrder() {
   })
 }
 
-watch(() => props.open, (val) => {
-  if (val) {
+watch(() => props.id, () => {
+  if (props.open) {
     loadProductOrder()
   }
 })
