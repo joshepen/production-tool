@@ -6,12 +6,14 @@ import ThingTable from '@/components/ThingTable.vue'
 import CreateProductOrderDialog from '@/pages/product_orders/CreateProductOrderDialog.vue'
 import { useProductOrderQuery, useStatusQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
+import { ref } from 'vue'
 
 const productOrderQuery = useProductOrderQuery()
 const statusQuery = useStatusQuery()
 const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
 const router = useRouter()
+const editingId = ref<number>(0)
 
 const headers = [
   { title: 'Created At', key: 'created_at', isDatetime: true },
@@ -20,6 +22,7 @@ const headers = [
   { title: 'Status', key: 'status_id' },
   { title: 'Address', key: 'address' },
   { title: 'Work Orders', key: 'work_orders' },
+  { title: 'Edit', key: 'edit' },
 ]
 
 async function onDelete(id: number) {
@@ -40,13 +43,17 @@ function handleStatusChange(po: ProductOrder, status_id: number) {
 function navigateToWorkOrders(po: ProductOrder) {
   router.push(`/work_orders/${po.id}`)
 }
+
+function onEdit(po: ProductOrder) {
+  editingId.value = po.id
+}
 </script>
 
 <template>
   <div :style="{ display: 'flex', flexDirection: 'column', margin: '10px' }">
     <h1>Product Orders</h1>
     <ThingTable
-      :custom-columns="['status_id', 'work_orders']"
+      :custom-columns="['status_id', 'work_orders', 'edit']"
       :get-name
       :headers
       :query="productOrderQuery"
@@ -72,6 +79,17 @@ function navigateToWorkOrders(po: ProductOrder) {
           View Work Orders
         </v-btn>
       </template>
+      <template #item.edit="{ item }">
+        <v-btn size="small" variant="text" @click="onEdit(item)">
+          Edit
+        </v-btn>
+      </template>
     </ThingTable>
+    <EditProductOrderDialog
+      v-if="editingId"
+      :open="true"
+      :id="editingId"
+      @update:open="editingId = 0"
+    />
   </div>
 </template>

@@ -98,3 +98,32 @@ pub async fn delete_user(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Er
         _ => Ok(()),
     }
 }
+
+pub async fn update_user(pool: &sqlx::MySqlPool, id: i32, u: &NewUser) -> Result<(), sqlx::Error> {
+    let result = match u.hired_at {
+        Some(h) => query!(
+            "UPDATE users SET first_name = ?, last_name = ?, department_id = ?, user_type_id = ?, hired_at = ? WHERE id = ?",
+            u.first_name,
+            u.last_name,
+            u.department_id,
+            u.user_type_id,
+            h,
+            id
+        ),
+        None => query!(
+            "UPDATE users SET first_name = ?, last_name = ?, department_id = ?, user_type_id = ? WHERE id = ?",
+            u.first_name,
+            u.last_name,
+            u.department_id,
+            u.user_type_id,
+            id
+        ),
+    }
+    .execute(pool)
+    .await?;
+    if result.rows_affected() == 0 {
+        Err(sqlx::Error::RowNotFound)
+    } else {
+        Ok(())
+    }
+}

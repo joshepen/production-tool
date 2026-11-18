@@ -154,3 +154,23 @@ pub async fn set_po_status(
     .await?;
     return Ok(());
 }
+
+pub async fn update_product_order(
+    pool: &sqlx::MySqlPool,
+    id: i32,
+    po: &NewProductOrder,
+) -> Result<(), sqlx::Error> {
+    let result = query!(
+        "UPDATE product_orders SET address = ?, product_id = ? WHERE id = ?",
+        po.address,
+        po.product_id,
+        id
+    )
+    .execute(pool)
+    .await?;
+    if result.rows_affected() == 0 {
+        Err(sqlx::Error::RowNotFound)
+    } else {
+        Ok(())
+    }
+}

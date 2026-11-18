@@ -1,5 +1,5 @@
 use crate::{db::products, restapi::errors::sqlx_error_to_http};
-use actix_web::{HttpResponse, Responder, delete, get, post, web};
+use actix_web::{HttpResponse, Responder, delete, get, post, put, web};
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_products);
@@ -7,6 +7,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_pretty_products);
     cfg.service(delete_product);
     cfg.service(post_product);
+    cfg.service(put_product);
 }
 
 #[get("/products")]
@@ -48,6 +49,18 @@ async fn post_product(
 ) -> impl Responder {
     match products::create_product(&pool, &body).await {
         Ok(id) => HttpResponse::Ok().body(id.to_string()),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[put("/product/{id}")]
+async fn put_product(
+    pool: web::Data<sqlx::MySqlPool>,
+    id: web::Path<i32>,
+    body: web::Json<products::NewProduct>,
+) -> impl Responder {
+    match products::update_product(&pool, *id, &body).await {
+        Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
 }

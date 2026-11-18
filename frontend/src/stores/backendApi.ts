@@ -31,5 +31,9 @@ export const useBackendApiStore = defineStore('backend_api', () => {
   async function post(path: string, data: object): Promise<AxiosResponse> {
     return await axiosInstance.post(path, data)
   }
-  return { get, _delete, post }
+
+  async function put(path: string, data: object): Promise<AxiosResponse> {
+    return await axiosInstance.put(path, data)
+  }
+  return { get, _delete, post, put }
 })

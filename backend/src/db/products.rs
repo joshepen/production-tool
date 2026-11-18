@@ -64,7 +64,6 @@ pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<u6
 
     let product_id = result.last_insert_id();
 
-    // Insert work center steps (recipe)
     for (index, work_center_id) in p.work_center_ids.iter().enumerate() {
         let step_order = (index + 1) as i32;
         query!(
@@ -80,6 +79,36 @@ pub async fn create_product(pool: &sqlx::MySqlPool, p: &NewProduct) -> Result<u6
     conn.commit().await?;
 
     return Ok(product_id);
+}
+
+pub async fn update_product(pool: &sqlx::MySqlPool, id: i32, p: &NewProduct) -> Result<(), sqlx::Error> {
+    let mut conn = pool.begin().await?;
+
+    let result = query!("UPDATE products SET name = ? WHERE id = ?", p.name, id)
+        .execute(&mut *conn)
+        .await?;
+    if result.rows_affected() == 0 {
+        return Err(sqlx::Error::RowNotFound);
+    }
+
+    // Replace the recipe (work center steps)
+    query!("DELETE FROM product_work_centers WHERE product_id = ?", id)
+        .execute(&mut *conn)
+        .await?;
+    for (index, work_center_id) in p.work_center_ids.iter().enumerate() {
+        let step_order = (index + 1) as i32;
+        query!(
+            "INSERT INTO product_work_centers (product_id, step_order, work_center_id) VALUES (?, ?, ?)",
+            id,
+            step_order,
+            work_center_id
+        )
+        .execute(&mut *conn)
+        .await?;
+    }
+
+    conn.commit().await?;
+    Ok(())
 }
 
 pub async fn delete_product(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {

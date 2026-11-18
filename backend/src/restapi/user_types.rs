@@ -1,11 +1,12 @@
 use crate::{db::user_types, restapi::errors::sqlx_error_to_http};
-use actix_web::{HttpResponse, Responder, delete, get, post, web};
+use actix_web::{HttpResponse, Responder, delete, get, post, put, web};
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_user_types);
     cfg.service(get_user_type);
     cfg.service(delete_user_type);
     cfg.service(post_user_type);
+    cfg.service(put_user_type);
 }
 
 #[get("/user_types")]
@@ -39,6 +40,18 @@ async fn post_user_type(
 ) -> impl Responder {
     match user_types::create_user_type(&pool, &body).await {
         Ok(id) => HttpResponse::Ok().body(id.to_string()),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[put("/user_type/{id}")]
+async fn put_user_type(
+    pool: web::Data<sqlx::MySqlPool>,
+    id: web::Path<i32>,
+    body: web::Json<user_types::NewUserType>,
+) -> impl Responder {
+    match user_types::update_user_type(&pool, *id, &body.name).await {
+        Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
 }

@@ -1,6 +1,6 @@
 use crate::db::product_orders;
 use crate::restapi::errors::sqlx_error_to_http;
-use actix_web::{HttpResponse, Responder, delete, get, post, web};
+use actix_web::{HttpResponse, Responder, delete, get, post, put, web};
 
 #[derive(serde::Deserialize)]
 pub struct ProductOrderStatusQuery {
@@ -17,6 +17,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_product_order);
     cfg.service(delete_product_order);
     cfg.service(post_product_order);
+    cfg.service(put_product_order);
     cfg.service(set_po_status);
     cfg.service(get_pretty_product_orders);
 }
@@ -81,6 +82,18 @@ async fn post_product_order(
 ) -> impl Responder {
     match product_orders::create_product_order(&pool, &body).await {
         Ok(id) => HttpResponse::Ok().body(id.to_string()),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[put("/product_order/{id}")]
+async fn put_product_order(
+    pool: web::Data<sqlx::MySqlPool>,
+    id: web::Path<i32>,
+    body: web::Json<product_orders::NewProductOrder>,
+) -> impl Responder {
+    match product_orders::update_product_order(&pool, *id, &body).await {
+        Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
 }

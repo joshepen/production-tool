@@ -57,3 +57,23 @@ pub async fn delete_work_center(pool: &sqlx::MySqlPool, id: i32) -> Result<(), s
         _ => Ok(()),
     }
 }
+
+pub async fn update_work_center(
+    pool: &sqlx::MySqlPool,
+    id: i32,
+    wc: &NewWorkCenter,
+) -> Result<(), sqlx::Error> {
+    let result = query!(
+        "UPDATE work_centers SET name = ?, description = ? WHERE id = ?",
+        wc.name,
+        wc.description,
+        id
+    )
+    .execute(pool)
+    .await?;
+    if result.rows_affected() == 0 {
+        Err(sqlx::Error::RowNotFound)
+    } else {
+        Ok(())
+    }
+}

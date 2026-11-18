@@ -1,5 +1,5 @@
 use crate::{db::users, restapi::errors::sqlx_error_to_http};
-use actix_web::{HttpResponse, Responder, delete, get, post, web};
+use actix_web::{HttpResponse, Responder, delete, get, post, put, web};
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_user);
@@ -7,6 +7,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_users);
     cfg.service(get_pretty_users);
     cfg.service(post_user);
+    cfg.service(put_user);
 }
 
 #[get("/users")]
@@ -48,6 +49,18 @@ async fn post_user(
 ) -> impl Responder {
     match users::create_user(&pool, &body).await {
         Ok(id) => HttpResponse::Ok().body(id.to_string()),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[put("/user/{id}")]
+async fn put_user(
+    pool: web::Data<sqlx::MySqlPool>,
+    id: web::Path<i32>,
+    body: web::Json<users::NewUser>,
+) -> impl Responder {
+    match users::update_user(&pool, *id, &body).await {
+        Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }
 }

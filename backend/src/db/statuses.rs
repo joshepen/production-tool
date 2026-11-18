@@ -1,5 +1,10 @@
 use serde;
-use sqlx::query_as;
+use sqlx::{query, query_as};
+
+#[derive(serde::Deserialize)]
+pub struct NewStatus {
+    pub name: String,
+}
 
 #[derive(serde::Serialize)]
 pub struct Status {
@@ -24,4 +29,15 @@ pub async fn get_statuses(pool: &sqlx::MySqlPool) -> Result<Vec<Status>, sqlx::E
         .await?;
 
     return Ok(users);
+}
+
+pub async fn update_status(pool: &sqlx::MySqlPool, id: i32, name: &str) -> Result<(), sqlx::Error> {
+    let result = query!("UPDATE statuses SET name = ? WHERE id = ?", name, id)
+        .execute(pool)
+        .await?;
+    if result.rows_affected() == 0 {
+        Err(sqlx::Error::RowNotFound)
+    } else {
+        Ok(())
+    }
 }

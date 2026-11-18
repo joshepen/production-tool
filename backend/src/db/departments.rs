@@ -50,3 +50,14 @@ pub async fn delete_department(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sq
         _ => Ok(()),
     }
 }
+
+pub async fn update_department(pool: &sqlx::MySqlPool, id: i32, name: &str) -> Result<(), sqlx::Error> {
+    let result = query!("UPDATE departments SET name = ? WHERE id = ?", name, id)
+        .execute(pool)
+        .await?;
+    if result.rows_affected() == 0 {
+        Err(sqlx::Error::RowNotFound)
+    } else {
+        Ok(())
+    }
+}
