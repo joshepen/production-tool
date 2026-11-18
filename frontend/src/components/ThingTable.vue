@@ -10,6 +10,7 @@ const props = defineProps<{
   query: UseQueryReturnType<any[], Error>
   getName: Function
   customColumns?: string[] // which keys get a passthrough slot
+  filteredItems?: any[] // override items source (e.g. client-side filter)
 }>()
 const headers = ref<Header[]>([...props.headers, { key: 'delete', title: '', width: '60px' }])
 const dialogOpen = ref<boolean>(false)
@@ -18,7 +19,8 @@ defineEmits(['delete'])
 
 <template>
   <div :style="{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }">
-    <div :style="{ display: 'flex', alignItems: 'center', gap: '10px' }">
+    <div :style="{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }">
+      <slot name="filter" />
       <v-text-field
         v-model="searchValue"
         append-inner-icon="mdi-magnify"
@@ -40,7 +42,7 @@ defineEmits(['delete'])
       fixed-header
       :headers
       height="450"
-      :items="query.data.value ?? []"
+      :items="props.filteredItems ?? query.data.value ?? []"
       :search="searchValue"
     >
       <!-- Date / datetime formatting -->

@@ -1,13 +1,25 @@
 <script setup lang="ts">
 import type { PrettyWorkOrder } from '@/types/DatabaseTypes'
 import { useQuery } from '@tanstack/vue-query'
+import { ref, computed } from 'vue'
 import ThingTable from '@/components/ThingTable.vue'
 import { useBackendApiStore } from '@/stores/backendApi'
-import { useStatusQuery, useUserQuery } from '@/queries/DatabaseQueries'
+import { useStatusQuery, useUserQuery, useProductOrderQuery } from '@/queries/DatabaseQueries'
 
 const backendApiStore = useBackendApiStore()
 const statusQuery = useStatusQuery()
 const userQuery = useUserQuery()
+const productOrderQuery = useProductOrderQuery()
+
+const selectedProductOrderId = ref<number | null>(null)
+
+const productOrderItems = computed(() => {
+  const orders = productOrderQuery.data.value ?? []
+  return [
+    { id: null, label: 'All product orders' },
+    ...orders.map((po) => ({ id: po.id, label: `#${po.id} - ${po.address}` })),
+  ]
+})
 
 // Query for all work orders across all product orders
 const allWorkOrdersQuery = useQuery({
@@ -16,6 +28,15 @@ const allWorkOrdersQuery = useQuery({
     const response = await backendApiStore.get('/pretty_work_orders?product_order_id=0')
     return response.data as PrettyWorkOrder[]
   },
+})
+
+const filteredWorkOrders = computed(() => {
+  if (selectedProductOrderId.value === null) {
+    return allWorkOrdersQuery.data.value ?? []
+  }
+  return (allWorkOrdersQuery.data.value ?? []).filter(
+    (wo) => wo.product_order_id === selectedProductOrderId.value,
+  )
 })
 
 const headers = [
@@ -63,7 +84,22 @@ function getName(wo: PrettyWorkOrder): string {
       :get-name
       :headers
       :query="allWorkOrdersQuery"
+      :filtered-items="filteredWorkOrders"
     >
+      <template #filter>
+        <v-select
+          :model-value="selectedProductOrderId"
+          :items="productOrderItems"
+          item-title="label"
+          item-value="id"
+          :style="{ minWidth: '260px' }"
+          variant="outlined"
+          clearable
+          hide-details="auto"
+          placeholder="Filter by product order"
+          @update:model-value="selectedProductOrderId = $event"
+        />
+      </template>
       <template #item.assignee_name="{ item }">
         <v-autocomplete
           density="compact"
@@ -90,13 +126,7 @@ function getName(wo: PrettyWorkOrder): string {
         />
       </template>
       <template #item.product_order_address="{ item }">
-        <v-btn
-          size="small"
-          variant="text"
-          @click="$router.push('/work_orders/' + item.product_order_id)"
-        >
-          #{{ item.product_order_id }} - {{ item.product_order_address }}
-        </v-btn>
+        <span>#{{ item.product_order_id }} - {{ item.product_order_address }}</span>
       </template>
       <template #item.started_at="{ item }">
         <div :style="{ display: 'flex', alignItems: 'center', gap: '5px' }">
