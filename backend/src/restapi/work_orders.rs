@@ -12,6 +12,11 @@ pub struct WorkOrderStatusPost {
     pub status_id: i32,
 }
 
+#[derive(serde::Deserialize)]
+pub struct WorkOrderAssigneePost {
+    pub assignee_id: Option<i32>,
+}
+
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_work_orders);
     cfg.service(get_pretty_work_orders);
@@ -21,6 +26,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(update_work_order_status);
     cfg.service(start_work_order);
     cfg.service(complete_work_order);
+    cfg.service(update_work_order_assignee);
 }
 
 #[get("/work_orders")]
@@ -101,6 +107,18 @@ async fn complete_work_order(
     id: web::Path<i32>,
 ) -> impl Responder {
     match work_orders::complete_work_order(&pool, *id).await {
+        Ok(_) => HttpResponse::Ok().finish(),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[post("/work_order/{id}/assignee")]
+async fn update_work_order_assignee(
+    pool: web::Data<sqlx::MySqlPool>,
+    id: web::Path<i32>,
+    body: web::Json<WorkOrderAssigneePost>,
+) -> impl Responder {
+    match work_orders::update_work_order_assignee(&pool, *id, body.assignee_id).await {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(e) => sqlx_error_to_http(e),
     }

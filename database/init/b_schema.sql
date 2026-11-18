@@ -61,9 +61,11 @@ CREATE TABLE IF NOT EXISTS work_orders (
 	product_order_id INT NOT NULL,
 	step_order INT NOT NULL,
 	status_id INT DEFAULT 1 NOT NULL,
+	assignee_id INT NULL,
 	started_at TIMESTAMP NULL,
 	completed_at TIMESTAMP NULL,
 	estimated_hours DOUBLE DEFAULT 0,
 	FOREIGN KEY (product_order_id) REFERENCES product_orders(id) ON DELETE CASCADE,
-	FOREIGN KEY (status_id) REFERENCES statuses(id)
+	FOREIGN KEY (status_id) REFERENCES statuses(id),
+	FOREIGN KEY (assignee_id) REFERENCES users(id)
 );

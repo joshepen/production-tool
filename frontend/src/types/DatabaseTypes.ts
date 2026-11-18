@@ -70,6 +70,8 @@ export interface PrettyWorkOrder {
   step_order: number
   status_id: number
   status_name: string
+  assignee_id?: number
+  assignee_name?: string
   started_at?: Date
   completed_at?: Date
   estimated_hours?: number

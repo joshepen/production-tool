@@ -4,10 +4,11 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed } from 'vue'
 import ThingTable from '@/components/ThingTable.vue'
 import { useBackendApiStore } from '@/stores/backendApi'
-import { useStatusQuery } from '@/queries/DatabaseQueries'
+import { useStatusQuery, useUserQuery } from '@/queries/DatabaseQueries'
 
 const backendApiStore = useBackendApiStore()
 const statusQuery = useStatusQuery()
+const userQuery = useUserQuery()
 const queryClient = useQueryClient()
 
 // Query for all work orders across all product orders
@@ -25,6 +26,7 @@ const headers = [
   { title: 'Product Order', key: 'product_order_address' },
   { title: 'Step Order', key: 'step_order' },
   { title: 'Work Center', key: 'work_center_name' },
+  { title: 'Assignee', key: 'assignee_name' },
   { title: 'Status', key: 'status_name' },
   { title: 'Estimated Hours', key: 'estimated_hours' },
   { title: 'Started At', key: 'started_at', isDatetime: true },
@@ -33,6 +35,11 @@ const headers = [
 
 async function handleStatusChange(wo: PrettyWorkOrder, status_id: number) {
   await backendApiStore.post(`/work_order/${wo.id}/status`, { status_id })
+  allWorkOrdersQuery.refetch()
+}
+
+async function handleAssigneeChange(wo: PrettyWorkOrder, userId: number | null) {
+  await backendApiStore.post(`/work_order/${wo.id}/assignee`, { assignee_id: userId })
   allWorkOrdersQuery.refetch()
 }
 
@@ -60,11 +67,24 @@ function getName(wo: PrettyWorkOrder): string {
       </v-btn>
     </div>
     <ThingTable
-      :custom-columns="['status_name', 'product_order_address']"
+      :custom-columns="['assignee_name', 'status_name', 'product_order_address']"
       :get-name
       :headers
       :query="allWorkOrdersQuery"
     >
+      <template #item.assignee_name="{ item }">
+        <v-autocomplete
+          density="compact"
+          item-title="name"
+          item-value="id"
+          :items="userQuery.data.value ?? []"
+          :model-value="item.assignee_id ?? null"
+          :style="{ minWidth: '180px' }"
+          variant="plain"
+          clearable
+          @update:model-value="(newId) => handleAssigneeChange(item, newId)"
+        />
+      </template>
       <template #item.status_name="{ item }">
         <v-select
           density="compact"

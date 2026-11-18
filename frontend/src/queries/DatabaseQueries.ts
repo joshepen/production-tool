@@ -15,6 +15,7 @@ export function useUserQuery() {
         (item) =>
           ({
             ...item,
+            name: `${item.first_name} ${item.last_name}`,
             hired_at: new Date(item.hired_at),
           }) as User,
       ),

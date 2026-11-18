@@ -8,6 +8,7 @@ pub struct NewWorkOrder {
     pub product_order_id: i32,
     pub step_order: i32,
     pub status_id: Option<i32>,
+    pub assignee_id: Option<i32>,
 }
 #[derive(serde::Serialize)]
 pub struct WorkOrder {
@@ -16,6 +17,7 @@ pub struct WorkOrder {
     pub work_center_id: i32,
     pub step_order: i32,
     pub status_id: i32,
+    pub assignee_id: Option<i32>,
     pub started_at: Option<DateTime<Utc>>,
     pub completed_at: Option<DateTime<Utc>>,
 }
@@ -30,6 +32,8 @@ pub struct PrettyWorkOrder {
     pub step_order: i32,
     pub status_id: i32,
     pub status_name: String,
+    pub assignee_id: Option<i32>,
+    pub assignee_name: Option<String>,
     pub started_at: Option<DateTime<Utc>>,
     pub completed_at: Option<DateTime<Utc>>,
     pub estimated_hours: Option<f64>,
@@ -41,7 +45,7 @@ pub async fn get_work_orders(
 ) -> Result<Vec<WorkOrder>, sqlx::Error> {
     let work_orders = query_as!(
         WorkOrder,
-        "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, wo.started_at, wo.completed_at
+        "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, wo.assignee_id, wo.started_at, wo.completed_at
          FROM work_orders wo
          JOIN product_orders po ON wo.product_order_id = po.id
          JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order
@@ -67,6 +71,8 @@ pub async fn get_pretty_work_orders(
                 wo.step_order,
                 wo.status_id,
                 s.name as status_name,
+                wo.assignee_id,
+                u.first_name AS assignee_name,
                 wo.started_at,
                 wo.completed_at,
                 wo.estimated_hours
@@ -75,6 +81,7 @@ pub async fn get_pretty_work_orders(
          JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order
          JOIN work_centers wc ON pwc.work_center_id = wc.id
          JOIN statuses s ON wo.status_id = s.id
+         LEFT JOIN users u ON wo.assignee_id = u.id
          WHERE (? = 0 OR wo.product_order_id = ?)
          ORDER BY wo.step_order",
         product_order_id,
@@ -88,7 +95,7 @@ pub async fn get_pretty_work_orders(
 pub async fn get_work_order(pool: &sqlx::MySqlPool, id: i32) -> Result<WorkOrder, sqlx::Error> {
     let work_order = query_as!(
         WorkOrder,
-        "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, wo.started_at, wo.completed_at
+        "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, wo.assignee_id, wo.started_at, wo.completed_at
          FROM work_orders wo
          JOIN product_orders po ON wo.product_order_id = po.id
          JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order
@@ -106,10 +113,11 @@ pub async fn create_work_order(
 ) -> Result<u64, sqlx::Error> {
     let status_id = wo.status_id.unwrap_or(1);
     let result = query!(
-        "INSERT INTO work_orders (product_order_id, step_order, status_id) VALUES (?, ?, ?)",
+        "INSERT INTO work_orders (product_order_id, step_order, status_id, assignee_id) VALUES (?, ?, ?, ?)",
         wo.product_order_id,
         wo.step_order,
-        status_id
+        status_id,
+        wo.assignee_id
     )
     .execute(pool)
     .await?;
@@ -204,5 +212,20 @@ pub async fn delete_work_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sq
         0 => Err(sqlx::Error::RowNotFound),
         _ => Ok(()),
     }
+}
+
+pub async fn update_work_order_assignee(
+    pool: &sqlx::MySqlPool,
+    id: i32,
+    assignee_id: Option<i32>,
+) -> Result<(), sqlx::Error> {
+    query!(
+        "UPDATE work_orders SET assignee_id = ? WHERE id = ?",
+        assignee_id,
+        id
+    )
+    .execute(pool)
+    .await?;
+    return Ok(());
 }
 

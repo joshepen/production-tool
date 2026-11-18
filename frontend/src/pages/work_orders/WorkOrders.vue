@@ -3,7 +3,7 @@ import type { PrettyWorkOrder } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
 import { ref, watch, computed } from 'vue'
 import ThingTable from '@/components/ThingTable.vue'
-import { useWorkOrderQuery, useStatusQuery } from '@/queries/DatabaseQueries'
+import { useWorkOrderQuery, useStatusQuery, useUserQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -12,12 +12,14 @@ const router = useRouter()
 const productOrderId = computed(() => parseInt(route.params.productOrderId as string) || 0)
 const workOrderQuery = useWorkOrderQuery(productOrderId.value)
 const statusQuery = useStatusQuery()
+const userQuery = useUserQuery()
 const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
 
 const headers = [
   { title: 'Step Order', key: 'step_order' },
   { title: 'Work Center', key: 'work_center_name' },
+  { title: 'Assignee', key: 'assignee_name' },
   { title: 'Status', key: 'status_name' },
   { title: 'Estimated Hours', key: 'estimated_hours' },
   { title: 'Started At', key: 'started_at', isDatetime: true },
@@ -26,6 +28,11 @@ const headers = [
 
 async function handleStatusChange(wo: PrettyWorkOrder, status_id: number) {
   await backendApiStore.post(`/work_order/${wo.id}/status`, { status_id })
+  queryClient.invalidateQueries({ queryKey: ['work_orders', productOrderId.value] })
+}
+
+async function handleAssigneeChange(wo: PrettyWorkOrder, userId: number | null) {
+  await backendApiStore.post(`/work_order/${wo.id}/assignee`, { assignee_id: userId })
   queryClient.invalidateQueries({ queryKey: ['work_orders', productOrderId.value] })
 }
 
@@ -51,11 +58,24 @@ function getName(wo: PrettyWorkOrder): string {
       <h1>Work Orders for Product Order #{{ productOrderId }}</h1>
     </div>
     <ThingTable
-      :custom-columns="['status_name']"
+      :custom-columns="['assignee_name', 'status_name']"
       :get-name
       :headers
       :query="workOrderQuery"
     >
+      <template #item.assignee_name="{ item }">
+        <v-autocomplete
+          density="compact"
+          item-title="name"
+          item-value="id"
+          :items="userQuery.data.value ?? []"
+          :model-value="item.assignee_id ?? null"
+          :style="{ minWidth: '180px' }"
+          variant="plain"
+          clearable
+          @update:model-value="(newId) => handleAssigneeChange(item, newId)"
+        />
+      </template>
       <template #item.status_name="{ item }">
         <v-select
           density="compact"
