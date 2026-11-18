@@ -43,6 +43,17 @@ export function useProductQuery() {
   })
 }
 
+export function usePrettyProductQuery() {
+  const backendApiStore = useBackendApiStore()
+  return useQuery({
+    queryKey: ['pretty_products'],
+    queryFn: async () => {
+      const response = await backendApiStore.get('/pretty_products')
+      return response.data
+    },
+  })
+}
+
 export function useProductOrderQuery() {
   const backendApiStore = useBackendApiStore()
   return useQuery({

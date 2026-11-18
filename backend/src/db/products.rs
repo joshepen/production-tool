@@ -12,6 +12,13 @@ pub struct Product {
     pub name: String,
 }
 
+#[derive(serde::Serialize)]
+pub struct PrettyProduct {
+    pub id: i32,
+    pub name: String,
+    pub work_centers: String,
+}
+
 pub async fn get_product(pool: &sqlx::MySqlPool, id: i32) -> Result<Product, sqlx::Error> {
     let product = query_as!(
         Product,
@@ -27,6 +34,23 @@ pub async fn get_products(pool: &sqlx::MySqlPool) -> Result<Vec<Product>, sqlx::
     let products = query_as!(Product, "SELECT p.id, p.name FROM products p")
         .fetch_all(pool)
         .await?;
+
+    return Ok(products);
+}
+
+pub async fn get_pretty_products(pool: &sqlx::MySqlPool) -> Result<Vec<PrettyProduct>, sqlx::Error> {
+    let products = query_as!(
+        PrettyProduct,
+        "SELECT p.id, p.name,
+           COALESCE(GROUP_CONCAT(wc.name ORDER BY pwc.step_order SEPARATOR ', '), '') AS work_centers
+         FROM products p
+         LEFT JOIN product_work_centers pwc ON p.id = pwc.product_id
+         LEFT JOIN work_centers wc ON pwc.work_center_id = wc.id
+         GROUP BY p.id, p.name
+         ORDER BY p.id"
+    )
+    .fetch_all(pool)
+    .await?;
 
     return Ok(products);
 }

@@ -14,7 +14,7 @@ const queryClient = useQueryClient()
 const allWorkOrdersQuery = useQuery({
   queryKey: ['all_work_orders'],
   queryFn: async () => {
-    const response = await backendApiStore.get('/pretty_work_orders')
+    const response = await backendApiStore.get('/pretty_work_orders?product_order_id=0')
     return response.data as PrettyWorkOrder[]
   },
 })

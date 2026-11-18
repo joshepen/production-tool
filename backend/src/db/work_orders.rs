@@ -75,8 +75,9 @@ pub async fn get_pretty_work_orders(
          JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order
          JOIN work_centers wc ON pwc.work_center_id = wc.id
          JOIN statuses s ON wo.status_id = s.id
-         WHERE wo.product_order_id = ?
+         WHERE (? = 0 OR wo.product_order_id = ?)
          ORDER BY wo.step_order",
+        product_order_id,
         product_order_id
     )
     .fetch_all(pool)
@@ -131,10 +132,7 @@ pub async fn update_work_order_status(
     return Ok(());
 }
 
-pub async fn start_work_order(
-    pool: &sqlx::MySqlPool,
-    id: i32,
-) -> Result<(), sqlx::Error> {
+pub async fn start_work_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
     query!(
         "UPDATE work_orders SET status_id = 4, started_at = CURRENT_TIMESTAMP WHERE id = ?",
         id
@@ -144,10 +142,7 @@ pub async fn start_work_order(
     return Ok(());
 }
 
-pub async fn complete_work_order(
-    pool: &sqlx::MySqlPool,
-    id: i32,
-) -> Result<(), sqlx::Error> {
+pub async fn complete_work_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sqlx::Error> {
     // Ensure predecessor (same product order, previous step_order) is completed
     let current = query!(
         "SELECT product_order_id, step_order FROM work_orders WHERE id = ?",
@@ -210,3 +205,4 @@ pub async fn delete_work_order(pool: &sqlx::MySqlPool, id: i32) -> Result<(), sq
         _ => Ok(()),
     }
 }
+

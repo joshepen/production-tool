@@ -23,6 +23,12 @@ export interface Product {
   name: string
 }
 
+export interface PrettyProduct {
+  id: number
+  name: string
+  work_centers: string
+}
+
 export interface ProductOrder {
   id: number
   address: string

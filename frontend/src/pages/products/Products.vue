@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import type { Product } from '@/types/DatabaseTypes'
+import type { PrettyProduct } from '@/types/DatabaseTypes'
 import { useQueryClient } from '@tanstack/vue-query'
 import ThingTable from '@/components/ThingTable.vue'
 import CreateProductDialog from '@/pages/products/CreateProductDialog.vue'
-import { useProductQuery } from '@/queries/DatabaseQueries'
+import { usePrettyProductQuery } from '@/queries/DatabaseQueries'
 import { useBackendApiStore } from '@/stores/backendApi'
-const productQuery = useProductQuery()
+const productQuery = usePrettyProductQuery()
 const queryClient = useQueryClient()
 const backendApiStore = useBackendApiStore()
-const headers = [{ title: 'Product Name', key: 'name' }]
+const headers = [
+  { title: 'Product Name', key: 'name' },
+  { title: 'Work Centers', key: 'work_centers' },
+]
 
 async function onDelete(id: number) {
   await backendApiStore._delete('/product/' + id)
   queryClient.invalidateQueries({ queryKey: ['products'] })
+  queryClient.invalidateQueries({ queryKey: ['pretty_products'] })
 }
 
-function getName(product: Product): string {
+function getName(product: PrettyProduct): string {
   return product.name
 }
 </script>

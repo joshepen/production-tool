@@ -1,0 +1,838 @@
+   Compiling pt-backend v0.1.0 (/home/josh/projects/production-tool/backend)
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/departments.rs:15:23
+   |
+15 |     let departments = query_as!(Department, "SELECT id, name FROM departments")
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/departments.rs:22:22
+   |
+22 |       let department = query_as!(
+   |  ______________________^
+23 | |         Department,
+24 | |         "SELECT d.id, d.name FROM departments d WHERE d.id = ?",
+25 | |         id
+26 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/departments.rs:36:18
+   |
+36 |     let result = query!("INSERT INTO departments (name) VALUES (?)", d.name,)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/departments.rs:44:18
+   |
+44 |     let result = query!("DELETE FROM departments WHERE id = ?", id)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_orders.rs:34:25
+   |
+34 |       let product_order = query_as!(
+   |  _________________________^
+35 | |         ProductOrder,
+36 | |         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o...
+37 | |         id
+38 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_orders.rs:45:26
+   |
+45 |       let product_orders = query_as!(
+   |  __________________________^
+46 | |         ProductOrder,
+47 | |         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o...
+48 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_orders.rs:57:26
+   |
+57 |       let product_orders = query_as!(
+   |  __________________________^
+58 | |         PrettyProductOrder,
+59 | |         "SELECT o.id, o.address, o.product_id, p.name as product_name, o.status_id, s.name as ...
+60 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_orders.rs:70:26
+   |
+70 |       let product_orders = query_as!(
+   |  __________________________^
+71 | |         ProductOrder,
+72 | |         "SELECT o.id, o.address, o.product_id, o.status_id, o.created_at FROM product_orders o...
+73 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_orders.rs:83:26
+   |
+83 |       let product_orders = query_as!(
+   |  __________________________^
+84 | |         PrettyProductOrder,
+85 | |         "SELECT o.id, o.address, o.product_id, p.name as product_name, o.status_id, s.name as ...
+86 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/product_orders.rs:98:18
+    |
+ 98 |       let result = query!(
+    |  __________________^
+ 99 | |         "INSERT INTO product_orders (address, product_id, status_id) VALUES (?, ?, 1)",
+100 | |         po.address,
+101 | |         po.product_id
+102 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/product_orders.rs:110:17
+    |
+110 |       let steps = query!(
+    |  _________________^
+111 | |         "SELECT step_order FROM product_work_centers WHERE product_id = ? ORDER BY step_order",
+112 | |         po.product_id
+113 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/product_orders.rs:118:9
+    |
+118 | / ...   query!(
+119 | | ...       "INSERT INTO work_orders (product_order_id, step_order, status_id) VALUES (?, ?, 1)",
+120 | | ...       product_order_id,
+121 | | ...       step.step_order
+122 | | ...   )
+    | |_______^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/product_orders.rs:133:18
+    |
+133 |     let result = query!("DELETE FROM product_orders WHERE id = ?", id)
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/product_orders.rs:148:5
+    |
+148 | /     query!(
+149 | |         "UPDATE product_orders SET status_id = ? WHERE id = ?",
+150 | |         status_id,
+151 | |         id
+152 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_work_centers.rs:22:15
+   |
+22 |       let pws = query_as!(
+   |  _______________^
+23 | |         PrettyProductWorkCenter,
+24 | |         "SELECT pwc.product_id, pwc.step_order, pwc.work_center_id, wc.name as work_center_name
+25 | |          FROM product_work_centers pwc
+...  |
+29 | |         product_id
+30 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_work_centers.rs:40:5
+   |
+40 | /     query!(
+41 | |         "INSERT INTO product_work_centers (product_id, step_order, work_center_id) VALUES (?, ...
+42 | |         pwc.product_id,
+43 | |         pwc.step_order,
+44 | |         pwc.work_center_id
+45 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_work_centers.rs:56:18
+   |
+56 |       let result = query!(
+   |  __________________^
+57 | |         "DELETE FROM product_work_centers WHERE product_id = ? AND step_order = ?",
+58 | |         product_id,
+59 | |         step_order
+60 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/product_work_centers.rs:74:5
+   |
+74 |     query!("DELETE FROM product_work_centers WHERE product_id = ?", product_id)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/products.rs:23:19
+   |
+23 |       let product = query_as!(
+   |  ___________________^
+24 | |         Product,
+25 | |         "SELECT p.id, p.name FROM products p WHERE p.id = ?",
+26 | |         id
+27 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/products.rs:34:20
+   |
+34 |     let products = query_as!(Product, "SELECT p.id, p.name FROM products p")
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/products.rs:42:20
+   |
+42 |       let products = query_as!(
+   |  ____________________^
+43 | |         PrettyProduct,
+44 | |         "SELECT p.id, p.name,
+45 | |            COALESCE(GROUP_CONCAT(wc.name ORDER BY pwc.step_order SEPARATOR ', '), '') AS work_...
+...  |
+50 | |          ORDER BY p.id"
+51 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/products.rs:61:18
+   |
+61 |     let result = query!("INSERT INTO products (name) VALUES (?)", p.name,)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/products.rs:70:9
+   |
+70 | / ...   query!(
+71 | | ...       "INSERT INTO product_work_centers (product_id, step_order, work_center_id) VALUES (?...
+72 | | ...       product_id,
+73 | | ...       step_order,
+74 | | ...       work_center_id
+75 | | ...   )
+   | |_______^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/products.rs:86:18
+   |
+86 |     let result = query!("DELETE FROM products WHERE id = ?", id)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/statuses.rs:11:18
+   |
+11 |       let status = query_as!(
+   |  __________________^
+12 | |         Status,
+13 | |         "SELECT s.id, s.name FROM statuses s WHERE s.id = ?",
+14 | |         id
+15 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/statuses.rs:22:17
+   |
+22 |     let users = query_as!(Status, "SELECT s.id, s.name FROM statuses s",)
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/user_types.rs:15:22
+   |
+15 |     let user_types = query_as!(UserType, "SELECT id, name FROM user_types")
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/user_types.rs:22:21
+   |
+22 |       let user_type = query_as!(
+   |  _____________________^
+23 | |         UserType,
+24 | |         "SELECT id, name FROM user_types WHERE id = ?",
+25 | |         id
+26 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/user_types.rs:33:18
+   |
+33 |     let result = query!("INSERT INTO user_types (name) VALUES (?)", ut.name)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/user_types.rs:41:18
+   |
+41 |     let result = query!("DELETE FROM user_types WHERE id = ?", id)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/users.rs:37:16
+   |
+37 |       let user = query_as!(
+   |  ________________^
+38 | |         User,
+39 | |         "SELECT u.id, u.first_name, u.last_name, u.hired_at, u.department_id, u.user_type_id F...
+40 | |         id
+41 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/users.rs:48:17
+   |
+48 |       let users = query_as!(
+   |  _________________^
+49 | |         User,
+50 | |         "SELECT u.id, u.first_name, u.last_name, u.hired_at, u.department_id, u.user_type_id F...
+51 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/users.rs:59:17
+   |
+59 |       let users = query_as!(
+   |  _________________^
+60 | |         PrettyUser,
+61 | |         "SELECT u.id, u.first_name, u.last_name, u.hired_at, u.department_id, d.name as depart...
+62 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/users.rs:71:20
+   |
+71 |   ...   Some(h) => query!(
+   |  __________________^
+72 | | ...       "INSERT INTO users (first_name, last_name, department_id, user_type_id, hired_at) VA...
+73 | | ...       u.first_name,
+74 | | ...       u.last_name,
+...  |
+77 | | ...       h
+78 | | ...   ),
+   | |_______^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/users.rs:79:17
+   |
+79 |   ...   None => query!(
+   |  _______________^
+80 | | ...       "INSERT INTO users (first_name, last_name, department_id, user_type_id) VALUES (?, ?...
+81 | | ...       u.first_name,
+82 | | ...       u.last_name,
+83 | | ...       u.department_id,
+84 | | ...       u.user_type_id,
+85 | | ...   ),
+   | |_______^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/users.rs:93:18
+   |
+93 |     let result = query!("DELETE FROM users WHERE id = ?", id)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_centers.rs:18:24
+   |
+18 |     let work_centers = query_as!(WorkCenter, "SELECT id, name, description FROM work_centers")
+   |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_centers.rs:25:23
+   |
+25 |       let work_center = query_as!(
+   |  _______________________^
+26 | |         WorkCenter,
+27 | |         "SELECT id, name, description FROM work_centers WHERE id = ?",
+28 | |         id
+29 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_centers.rs:39:18
+   |
+39 |       let result = query!(
+   |  __________________^
+40 | |         "INSERT INTO work_centers (name, description) VALUES (?, ?)",
+41 | |         wc.name,
+42 | |         wc.description
+43 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_centers.rs:51:18
+   |
+51 |     let result = query!("DELETE FROM work_centers WHERE id = ?", id)
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_orders.rs:42:23
+   |
+42 |       let work_orders = query_as!(
+   |  _______________________^
+43 | |         WorkOrder,
+44 | |         "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, w...
+45 | |          FROM work_orders wo
+...  |
+49 | |         product_order_id
+50 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_orders.rs:60:23
+   |
+60 |       let work_orders = query_as!(
+   |  _______________________^
+61 | |         PrettyWorkOrder,
+62 | |         "SELECT wo.id,
+63 | |                 wo.product_order_id,
+...  |
+80 | |         product_order_id
+81 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+  --> src/db/work_orders.rs:88:22
+   |
+88 |       let work_order = query_as!(
+   |  ______________________^
+89 | |         WorkOrder,
+90 | |         "SELECT wo.id, wo.product_order_id, pwc.work_center_id, wo.step_order, wo.status_id, w...
+91 | |          FROM work_orders wo
+...  |
+95 | |         id
+96 | |     )
+   | |_____^
+   |
+   = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query_as` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:107:18
+    |
+107 |       let result = query!(
+    |  __________________^
+108 | |         "INSERT INTO work_orders (product_order_id, step_order, status_id) VALUES (?, ?, ?)",
+109 | |         wo.product_order_id,
+110 | |         wo.step_order,
+111 | |         status_id
+112 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:124:5
+    |
+124 | /     query!(
+125 | |         "UPDATE work_orders SET status_id = ? WHERE id = ?",
+126 | |         status_id,
+127 | |         id
+128 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:135:5
+    |
+135 | /     query!(
+136 | |         "UPDATE work_orders SET status_id = 4, started_at = CURRENT_TIMESTAMP WHERE id = ?",
+137 | |         id
+138 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:146:19
+    |
+146 |       let current = query!(
+    |  ___________________^
+147 | |         "SELECT product_order_id, step_order FROM work_orders WHERE id = ?",
+148 | |         id
+149 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:154:20
+    |
+154 |           let prev = query!(
+    |  ____________________^
+155 | |             "SELECT status_id FROM work_orders WHERE product_order_id = ? AND step_order = ?",
+156 | |             current.product_order_id,
+157 | |             current.step_order - 1
+158 | |         )
+    | |_________^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:169:5
+    |
+169 | /     query!(
+170 | |         "UPDATE work_orders SET status_id = 5, completed_at = CURRENT_TIMESTAMP WHERE id = ?",
+171 | |         id
+172 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:178:21
+    |
+178 |       let remaining = query!(
+    |  _____________________^
+179 | |         "SELECT COUNT(*) AS cnt FROM work_orders WHERE product_order_id = ? AND status_id != 5",
+180 | |         current.product_order_id
+181 | |     )
+    | |_____^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:186:9
+    |
+186 | /         query!(
+187 | |             "UPDATE product_orders SET status_id = 5 WHERE id = ?",
+188 | |             current.product_order_id
+189 | |         )
+    | |_________^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: error communicating with database: Connection refused (os error 111)
+   --> src/db/work_orders.rs:198:18
+    |
+198 |     let result = query!("DELETE FROM work_orders WHERE id = ?", id)
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this error originates in the macro `$crate::sqlx_macros::expand_query` which comes from the expansion of the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: method call on a diverging inference variable
+  --> src/db/departments.rs:40:22
+   |
+40 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+   = note: `#[warn(method_call_on_diverging_infer_var)]` (part of `#[warn(future_incompatible)]`) on by default
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+  --> src/db/departments.rs:40:22
+   |
+40 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/departments.rs:48:18
+   |
+48 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+  --> src/db/departments.rs:48:18
+   |
+48 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+   --> src/db/product_orders.rs:106:35
+    |
+106 |     let product_order_id = result.last_insert_id();
+    |                                   ^^^^^^^^^^^^^^
+    |
+    = help: consider providing a type annotation
+    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+    = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+   --> src/db/product_orders.rs:106:35
+    |
+106 |     let product_order_id = result.last_insert_id();
+    |                                   ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+   --> src/db/product_orders.rs:137:18
+    |
+137 |     match result.rows_affected() {
+    |                  ^^^^^^^^^^^^^
+    |
+    = help: consider providing a type annotation
+    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+    = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+   --> src/db/product_orders.rs:137:18
+    |
+137 |     match result.rows_affected() {
+    |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/product_work_centers.rs:64:18
+   |
+64 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+  --> src/db/product_work_centers.rs:64:18
+   |
+64 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/products.rs:65:29
+   |
+65 |     let product_id = result.last_insert_id();
+   |                             ^^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+  --> src/db/products.rs:65:29
+   |
+65 |     let product_id = result.last_insert_id();
+   |                             ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/products.rs:90:18
+   |
+90 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+  --> src/db/products.rs:90:18
+   |
+90 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/user_types.rs:37:22
+   |
+37 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+  --> src/db/user_types.rs:37:22
+   |
+37 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/user_types.rs:45:18
+   |
+45 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+  --> src/db/user_types.rs:45:18
+   |
+45 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/users.rs:89:22
+   |
+89 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+  --> src/db/users.rs:89:22
+   |
+89 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/users.rs:96:18
+   |
+96 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+  --> src/db/users.rs:96:18
+   |
+96 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/work_centers.rs:47:22
+   |
+47 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+  --> src/db/work_centers.rs:47:22
+   |
+47 |     return Ok(result.last_insert_id());
+   |                      ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+  --> src/db/work_centers.rs:55:18
+   |
+55 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^
+   |
+   = help: consider providing a type annotation
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+  --> src/db/work_centers.rs:55:18
+   |
+55 |     match result.rows_affected() {
+   |                  ^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+   --> src/db/work_orders.rs:116:22
+    |
+116 |     return Ok(result.last_insert_id());
+    |                      ^^^^^^^^^^^^^^
+    |
+    = help: consider providing a type annotation
+    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+    = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `last_insert_id` found for type `!` in the current scope
+   --> src/db/work_orders.rs:116:22
+    |
+116 |     return Ok(result.last_insert_id());
+    |                      ^^^^^^^^^^^^^^ method not found in `!`
+
+warning: method call on a diverging inference variable
+   --> src/db/work_orders.rs:202:18
+    |
+202 |     match result.rows_affected() {
+    |                  ^^^^^^^^^^^^^
+    |
+    = help: consider providing a type annotation
+    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+    = note: for more information, see issue #156047 <https://github.com/rust-lang/rust/issues/156047>
+
+error[E0599]: no method named `rows_affected` found for type `!` in the current scope
+   --> src/db/work_orders.rs:202:18
+    |
+202 |     match result.rows_affected() {
+    |                  ^^^^^^^^^^^^^ method not found in `!`
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `pt-backend` (bin "pt-backend") generated 15 warnings
+error: could not compile `pt-backend` (bin "pt-backend") due to 67 previous errors; 30 warnings emitted

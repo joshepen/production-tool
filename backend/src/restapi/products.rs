@@ -4,6 +4,7 @@ use actix_web::{HttpResponse, Responder, delete, get, post, web};
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(get_products);
     cfg.service(get_product);
+    cfg.service(get_pretty_products);
     cfg.service(delete_product);
     cfg.service(post_product);
 }
@@ -11,6 +12,14 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
 #[get("/products")]
 async fn get_products(pool: web::Data<sqlx::MySqlPool>) -> impl Responder {
     match products::get_products(&pool).await {
+        Ok(d) => HttpResponse::Ok().json(d),
+        Err(e) => sqlx_error_to_http(e),
+    }
+}
+
+#[get("/pretty_products")]
+async fn get_pretty_products(pool: web::Data<sqlx::MySqlPool>) -> impl Responder {
+    match products::get_pretty_products(&pool).await {
         Ok(d) => HttpResponse::Ok().json(d),
         Err(e) => sqlx_error_to_http(e),
     }
