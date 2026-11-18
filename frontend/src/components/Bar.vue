@@ -11,12 +11,7 @@
   const display = useDisplay({ mobileBreakpoint: 'md' })
   const isDesktop = computed(() => display.mdAndUp.value)
 
-  const drawer = ref(false)
-  watch(isDesktop, (newVal) => {
-    if (newVal) {
-      drawer.value = true
-    }
-  })
+  const drawer = ref(isDesktop.value)
 
   const items = [
     { name: 'Users', path: '/users', icon: 'account-group' },
@@ -47,13 +42,22 @@
     </v-list-item>
 
     <v-list density="comfortable" nav>
-      <v-list-item
-        v-for="item in items"
-        :key="item.path"
-        :prepend-icon="item.icon"
-        :title="item.name"
-        :to="item.path"
-      />
+      <v-list-group color="primary" :model-value="true">
+        <template #activator="{ props }">
+          <v-list-item
+            prepend-icon="mdi-shield-account"
+            title="Admin"
+            v-bind="props"
+          />
+        </template>
+        <v-list-item
+          v-for="item in items"
+          :key="item.path"
+          :prepend-icon="item.icon"
+          :title="item.name"
+          :to="item.path"
+        />
+      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>

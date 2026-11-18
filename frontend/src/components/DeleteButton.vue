@@ -8,9 +8,8 @@ const open = ref<boolean>(false)
 <template>
   <v-btn
     color="red-lighten-1"
-    density="compact"
+    size="small"
     variant="text"
-    :style="{ minWidth: '0', padding: '0 4px' }"
     @click="open = true"
   >Delete</v-btn>
   <v-dialog v-model="open" width="auto">

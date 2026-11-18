@@ -11,7 +11,7 @@ const props = defineProps<{
   getName: Function
   customColumns?: string[] // which keys get a passthrough slot
 }>()
-const headers = ref<Header[]>([...props.headers, { key: 'delete', title: '', width: '40px' }])
+const headers = ref<Header[]>([...props.headers, { key: 'delete', title: '', width: '60px' }])
 const dialogOpen = ref<boolean>(false)
 defineEmits(['delete'])
 </script>
