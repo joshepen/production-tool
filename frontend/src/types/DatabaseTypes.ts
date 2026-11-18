@@ -74,5 +74,4 @@ export interface PrettyWorkOrder {
   assignee_name?: string
   started_at?: Date
   completed_at?: Date
-  estimated_hours?: number
 }

@@ -36,7 +36,6 @@ pub struct PrettyWorkOrder {
     pub assignee_name: Option<String>,
     pub started_at: Option<DateTime<Utc>>,
     pub completed_at: Option<DateTime<Utc>>,
-    pub estimated_hours: Option<f64>,
 }
 
 pub async fn get_work_orders(
@@ -74,8 +73,7 @@ pub async fn get_pretty_work_orders(
                 wo.assignee_id,
                 u.first_name AS assignee_name,
                 wo.started_at,
-                wo.completed_at,
-                wo.estimated_hours
+                wo.completed_at
          FROM work_orders wo
          JOIN product_orders po ON wo.product_order_id = po.id
          JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order

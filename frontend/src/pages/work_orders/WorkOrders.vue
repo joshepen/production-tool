@@ -21,7 +21,6 @@ const headers = [
   { title: 'Work Center', key: 'work_center_name' },
   { title: 'Assignee', key: 'assignee_name' },
   { title: 'Status', key: 'status_name' },
-  { title: 'Estimated Hours', key: 'estimated_hours' },
   { title: 'Started At', key: 'started_at', isDatetime: true },
   { title: 'Completed At', key: 'completed_at', isDatetime: true },
 ]

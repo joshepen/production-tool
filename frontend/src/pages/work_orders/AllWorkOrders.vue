@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PrettyWorkOrder } from '@/types/DatabaseTypes'
-import { useQuery, useQueryClient } from '@tanstack/vue-query'
-import { computed } from 'vue'
+import { useQuery } from '@tanstack/vue-query'
 import ThingTable from '@/components/ThingTable.vue'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useStatusQuery, useUserQuery } from '@/queries/DatabaseQueries'
@@ -9,7 +8,6 @@ import { useStatusQuery, useUserQuery } from '@/queries/DatabaseQueries'
 const backendApiStore = useBackendApiStore()
 const statusQuery = useStatusQuery()
 const userQuery = useUserQuery()
-const queryClient = useQueryClient()
 
 // Query for all work orders across all product orders
 const allWorkOrdersQuery = useQuery({
@@ -20,15 +18,12 @@ const allWorkOrdersQuery = useQuery({
   },
 })
 
-const isPending = computed(() => allWorkOrdersQuery.isPending.value)
-
 const headers = [
   { title: 'Product Order', key: 'product_order_address' },
   { title: 'Step Order', key: 'step_order' },
   { title: 'Work Center', key: 'work_center_name' },
   { title: 'Assignee', key: 'assignee_name' },
   { title: 'Status', key: 'status_name' },
-  { title: 'Estimated Hours', key: 'estimated_hours' },
   { title: 'Started At', key: 'started_at', isDatetime: true },
   { title: 'Completed At', key: 'completed_at', isDatetime: true },
 ]
@@ -61,10 +56,7 @@ function getName(wo: PrettyWorkOrder): string {
 <template>
   <div :style="{ display: 'flex', flexDirection: 'column', margin: '10px' }">
     <div :style="{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }">
-      <h1>All Work Orders</h1>
-      <v-btn color="primary" @click="allWorkOrdersQuery.refetch" :disabled="isPending">
-        Refresh
-      </v-btn>
+      <h1>Work Orders</h1>
     </div>
     <ThingTable
       :custom-columns="['assignee_name', 'status_name', 'product_order_address']"
