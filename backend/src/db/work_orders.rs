@@ -27,6 +27,7 @@ pub struct PrettyWorkOrder {
     pub id: i32,
     pub product_order_id: i32,
     pub product_order_address: String,
+    pub product_name: String,
     pub work_center_id: i32,
     pub work_center_name: String,
     pub step_order: i32,
@@ -65,6 +66,7 @@ pub async fn get_pretty_work_orders(
         "SELECT wo.id,
                 wo.product_order_id,
                 po.address as product_order_address,
+                pr.name as product_name,
                 pwc.work_center_id,
                 wc.name as work_center_name,
                 wo.step_order,
@@ -76,6 +78,7 @@ pub async fn get_pretty_work_orders(
                 wo.completed_at
          FROM work_orders wo
          JOIN product_orders po ON wo.product_order_id = po.id
+         JOIN products pr ON po.product_id = pr.id
          JOIN product_work_centers pwc ON po.product_id = pwc.product_id AND wo.step_order = pwc.step_order
          JOIN work_centers wc ON pwc.work_center_id = wc.id
          JOIN statuses s ON wo.status_id = s.id

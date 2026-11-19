@@ -53,7 +53,9 @@ function getName(wo: PrettyWorkOrder): string {
 <template>
   <div :style="{ display: 'flex', flexDirection: 'column', margin: '10px' }">
     <div :style="{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }">
-      <v-btn icon="mdi-arrow-left" @click="router.push('/product_orders')" />
+      <v-btn rounded="lg" @click="router.back()"
+      >Back</v-btn
+    >
       <h1>Work Orders for Product Order #{{ productOrderId }}</h1>
     </div>
     <ThingTable
@@ -89,7 +91,7 @@ function getName(wo: PrettyWorkOrder): string {
       </template>
       <template #item.started_at="{ item }">
         <div :style="{ display: 'flex', alignItems: 'center', gap: '5px' }">
-          <span>{{ item.started_at ? new Date(item.started_at).toLocaleString() : '-' }}</span>
+          <span>{{ item.started_at && !isNaN(new Date(item.started_at).getTime()) ? new Date(item.started_at).toLocaleString() : 'Not started' }}</span>
           <v-btn
             v-if="item.status_id < 4"
             size="x-small"
@@ -102,7 +104,7 @@ function getName(wo: PrettyWorkOrder): string {
       </template>
       <template #item.completed_at="{ item }">
         <div :style="{ display: 'flex', alignItems: 'center', gap: '5px' }">
-          <span>{{ item.completed_at ? new Date(item.completed_at).toLocaleString() : '-' }}</span>
+          <span>{{ item.completed_at && !isNaN(new Date(item.completed_at).getTime()) ? new Date(item.completed_at).toLocaleString() : 'Incomplete' }}</span>
           <v-btn
             v-if="item.status_id === 4"
             size="x-small"

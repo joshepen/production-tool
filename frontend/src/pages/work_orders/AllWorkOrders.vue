@@ -5,13 +5,18 @@ import { ref, computed } from 'vue'
 import ThingTable from '@/components/ThingTable.vue'
 import { useBackendApiStore } from '@/stores/backendApi'
 import { useStatusQuery, useUserQuery, useProductOrderQuery } from '@/queries/DatabaseQueries'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const router = useRouter()
 const backendApiStore = useBackendApiStore()
 const statusQuery = useStatusQuery()
 const userQuery = useUserQuery()
 const productOrderQuery = useProductOrderQuery()
 
-const selectedProductOrderId = ref<number | null>(null)
+const selectedProductOrderId = ref<number | null>(
+  route.params.productOrderId ? parseInt(route.params.productOrderId as string) : null,
+)
 
 const productOrderItems = computed(() => {
   const orders = productOrderQuery.data.value ?? []
@@ -30,17 +35,8 @@ const allWorkOrdersQuery = useQuery({
   },
 })
 
-const filteredWorkOrders = computed(() => {
-  if (selectedProductOrderId.value === null) {
-    return allWorkOrdersQuery.data.value ?? []
-  }
-  return (allWorkOrdersQuery.data.value ?? []).filter(
-    (wo) => wo.product_order_id === selectedProductOrderId.value,
-  )
-})
-
 const headers = [
-  { title: 'Product Order', key: 'product_order_address' },
+  { title: 'Product Order', key: 'product_name' },
   { title: 'Step Order', key: 'step_order' },
   { title: 'Work Center', key: 'work_center_name' },
   { title: 'Assignee', key: 'assignee_name' },
@@ -80,11 +76,10 @@ function getName(wo: PrettyWorkOrder): string {
       <h1>Work Orders</h1>
     </div>
     <ThingTable
-      :custom-columns="['assignee_name', 'status_name', 'product_order_address']"
+      :custom-columns="['assignee_name', 'status_name', 'product_name']"
       :get-name
       :headers
       :query="allWorkOrdersQuery"
-      :filtered-items="filteredWorkOrders"
     >
       <template #filter>
         <v-select
@@ -97,7 +92,12 @@ function getName(wo: PrettyWorkOrder): string {
           clearable
           hide-details="auto"
           placeholder="Filter by product order"
-          @update:model-value="selectedProductOrderId = $event"
+          @update:model-value="
+            (newId) => {
+              if (newId) router.push(`/work_orders/${newId}`)
+              else router.push('/work_orders')
+            }
+          "
         />
       </template>
       <template #item.assignee_name="{ item }">
@@ -125,12 +125,12 @@ function getName(wo: PrettyWorkOrder): string {
           @update:model-value="(newId) => handleStatusChange(item, newId)"
         />
       </template>
-      <template #item.product_order_address="{ item }">
-        <span>#{{ item.product_order_id }} - {{ item.product_order_address }}</span>
+      <template #item.product_name="{ item }">
+        <span>#{{ item.product_order_id }} - {{ item.product_name }}</span>
       </template>
       <template #item.started_at="{ item }">
         <div :style="{ display: 'flex', alignItems: 'center', gap: '5px' }">
-          <span>{{ item.started_at ? new Date(item.started_at).toLocaleString() : '-' }}</span>
+          <span>{{ item.started_at && !isNaN(new Date(item.started_at).getTime()) ? new Date(item.started_at).toLocaleString() : 'Not started' }}</span>
           <v-btn
             v-if="item.status_id < 4"
             size="x-small"
@@ -143,7 +143,7 @@ function getName(wo: PrettyWorkOrder): string {
       </template>
       <template #item.completed_at="{ item }">
         <div :style="{ display: 'flex', alignItems: 'center', gap: '5px' }">
-          <span>{{ item.completed_at ? new Date(item.completed_at).toLocaleString() : '-' }}</span>
+          <span>{{ item.completed_at && !isNaN(new Date(item.completed_at).getTime()) ? new Date(item.completed_at).toLocaleString() : 'Incomplete' }}</span>
           <v-btn
             v-if="item.status_id === 4"
             size="x-small"
