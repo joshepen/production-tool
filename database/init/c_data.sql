@@ -15,8 +15,9 @@ INSERT INTO users (first_name, last_name, hired_at, department_id, user_type_id)
 INSERT INTO products (name) VALUES ("Teenage Mutant Ninja Turtle Action Figure");
 INSERT INTO products (name) VALUES ("Gun");
 
-INSERT INTO statuses (name) VALUES ("Pending");
+INSERT INTO statuses (name) VALUES ("Not Started");
 INSERT INTO statuses (name) VALUES ("Started");
+INSERT INTO statuses (name) VALUES ("Pending");
 INSERT INTO statuses (name) VALUES ("Waiting");
 INSERT INTO statuses (name) VALUES ("In Progress");
 INSERT INTO statuses (name) VALUES ("Completed");
