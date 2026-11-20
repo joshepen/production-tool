@@ -1,13 +1,10 @@
 <script setup lang="ts">
-  import { computed, ref, watch } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { computed, ref } from 'vue'
   import { useDisplay } from 'vuetify'
-
-  const router = useRouter()
 
   // Treat screens >= 960px as "desktop": the drawer is permanently open there.
   // On smaller screens the drawer collapses into a temporary overlay toggled by
-  // the hamburger button in the app bar.
+  // the floating menu button in the bottom-left corner.
   const display = useDisplay({ mobileBreakpoint: 'md' })
   const isDesktop = computed(() => display.mdAndUp.value)
 
@@ -24,22 +21,23 @@
 </script>
 
 <template>
-  <v-app-bar color="surface" elevation="1">
-    <v-btn icon="mdi-menu" @click="drawer = !drawer" />
-    <v-app-bar-title @click="router.push('/')">Production Tool</v-app-bar-title>
-  </v-app-bar>
-
   <v-navigation-drawer
     :model-value="drawer"
     :permanent="false"
     width="256"
     @update:model-value="drawer = $event"
   >
-    <v-list-item class="pa-4 pb-2">
-      <v-list-item-title class="text-subtitle-2 text-medium-emphasis">
-        Production Tool
-      </v-list-item-title>
-    </v-list-item>
+    <div class="d-flex align-center ga-2 px-4 py-3">
+      <v-btn
+        icon="mdi-menu-open"
+        color="indigo-lighten-1"
+        variant="text"
+        density="compact"
+        aria-label="Toggle navigation"
+        @click="drawer = !drawer"
+      />
+      <span class="text-subtitle-2 text-medium-emphasis">Production Tool</span>
+    </div>
 
     <v-list density="comfortable" nav>
       <v-list-group color="primary" :model-value="true">
@@ -60,4 +58,18 @@
       </v-list-group>
     </v-list>
   </v-navigation-drawer>
+
+  <v-btn
+    v-if="!drawer"
+    prepend-icon="mdi-menu"
+    color="indigo-lighten-1"
+    location="bottom left"
+    position="fixed"
+    class="ma-4"
+    style="z-index: 3000"
+    aria-label="Open navigation"
+    @click="drawer = !drawer"
+  >
+    Menu
+  </v-btn>
 </template>
